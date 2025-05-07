@@ -1,0 +1,22 @@
+{
+  "files": {
+    "main.css": "/static/css/main.b89fd8eb.css",
+    "main.js": "/static/js/main.bbca5f3c.js",
+    "static/media/SecureNet.png": "/static/media/SecureNet.709f954f0e2177a7a7c3.png",
+    "static/media/ShopEase.png": "/static/media/ShopEase.b6459385dc58ef5a5e3a.png",
+    "static/media/banner.png": "/static/media/banner.b86302b72441d0f07465.png",
+    "static/media/profile.jpg": "/static/media/profile.a2b0455f56fab2151349.jpg",
+    "static/media/Chattify.png": "/static/media/Chattify.0d8cdc93660336f4b781.png",
+    "static/media/slick.svg": "/static/media/slick.2630a3e3eab21c607e21.svg",
+    "static/media/slick.eot": "/static/media/slick.a4e97f5a2a64f0ab1323.eot",
+    "static/media/slick.ttf": "/static/media/slick.c94f7671dcc99dce43e2.ttf",
+    "static/media/slick.woff": "/static/media/slick.295183786cd8a1389865.woff",
+    "index.html": "/index.html",
+    "main.b89fd8eb.css.map": "/static/css/main.b89fd8eb.css.map",
+    "main.bbca5f3c.js.map": "/static/js/main.bbca5f3c.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.b89fd8eb.css",
+    "static/js/main.bbca5f3c.js"
+  ]
+}
