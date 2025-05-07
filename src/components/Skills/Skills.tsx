@@ -1,6 +1,6 @@
 
-import SectionTitle from "../ui/SectionTitle";
-import { Card } from "@/components/ui/card";
+import SectionTitle from "../UI/SectionTitle";
+import { Card } from "@/components/UI/card";
 
 const Skills = () => {
   const skillsData = [

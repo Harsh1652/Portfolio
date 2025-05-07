@@ -1,10 +1,10 @@
 import { useState, useRef } from "react";
-import SectionTitle from "../ui/SectionTitle";
-import { Card } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { useToast } from "@/components/ui/use-toast";
+import SectionTitle from "../UI/SectionTitle";
+import { Card } from "@/components/UI/card";
+import { Button } from "@/components/UI/button";
+import { Input } from "@/components/UI/input";
+import { Textarea } from "@/components/UI/textarea";
+import { useToast } from "@/components/UI/use-toast";
 import { Github, Linkedin, Mail, Phone, Send } from "lucide-react";
 
 const Contact = () => {

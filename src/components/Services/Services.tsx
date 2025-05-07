@@ -1,6 +1,6 @@
 
-import SectionTitle from "../ui/SectionTitle";
-import { Card } from "@/components/ui/card";
+import SectionTitle from "../UI/SectionTitle";
+import { Card } from "@/components/UI/card";
 import { Code, Database, Laptop } from "lucide-react";
 
 const Services = () => {

@@ -1,17 +1,17 @@
 import { useRef, useState, useEffect } from "react";
-import SectionTitle from "../ui/SectionTitle";
-import { Card } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import SectionTitle from "../UI/SectionTitle";
+import { Card } from "@/components/UI/card";
+import { Button } from "@/components/UI/button";
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { useToast } from "@/components/ui/use-toast";
+} from "@/components/UI/dialog";
+import { Input } from "@/components/UI/input";
+import { Textarea } from "@/components/UI/textarea";
+import { useToast } from "@/components/UI/use-toast";
 import { Star, Loader2, ChevronLeft, ChevronRight } from "lucide-react";
 import {
   Carousel,
@@ -19,7 +19,7 @@ import {
   CarouselItem,
   CarouselNext,
   CarouselPrevious,
-} from "@/components/ui/carousel";
+} from "@/components/UI/carousel";
 import useEmblaCarousel from 'embla-carousel-react';
 import Autoplay from 'embla-carousel-autoplay';
 // Define the testimonial type based on your MongoDB schema

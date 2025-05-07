@@ -1,9 +1,9 @@
 
 import { useState } from "react";
-import SectionTitle from "../ui/SectionTitle";
-import { Card } from "@/components/ui/card";
+import SectionTitle from "../UI/SectionTitle";
+import { Card } from "@/components/UI/card";
 import { ArrowRight, Github, Link } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/UI/button";
 
 const Projects = () => {
   const [hoveredId, setHoveredId] = useState<number | null>(null);

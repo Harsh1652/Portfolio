@@ -2,7 +2,7 @@
 import { ReactNode } from 'react';
 import Header from '../Header/Header';
 import Footer from '../Footer/Footer';
-import ParticleBackground from '../ui/ParticleBackground';
+import ParticleBackground from '../UI/ParticleBackground';
 
 interface LayoutProps {
   children: ReactNode;
