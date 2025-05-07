@@ -1,0 +1,82 @@
+/* Base styles */
+html {
+    scroll-behavior: smooth;
+  }
+  
+  body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Roboto', 'Inter', 'Segoe UI', 'Oxygen',
+      'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+      sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+  }
+  
+  code {
+    font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+      monospace;
+  }
+  
+  /* Scrollbar customization */
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+  
+  ::-webkit-scrollbar-track {
+    background: #2d2d2d;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background: #555;
+    border-radius: 4px;
+  }
+  
+  ::-webkit-scrollbar-thumb:hover {
+    background: #888;
+  }
+  
+  /* Animation classes */
+  .fade-in {
+    animation: fadeIn 1s ease-in-out;
+  }
+  
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  /* Fix for Slick carousel in dark mode */
+  .slick-dots li button:before {
+    color: #888 !important;
+  }
+  
+  .slick-dots li.slick-active button:before {
+    color: #fff !important;
+  }
+  
+  .slick-prev:before,
+  .slick-next:before {
+    color: #888 !important;
+  }
+  
+  /* Remove default styling for links */
+  a {
+    text-decoration: none;
+  }
+  
+  /* Utility classes */
+  .text-gradient {
+    background: linear-gradient(90deg, #00aeff, #a68eff);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-fill-color: transparent;
+  }
