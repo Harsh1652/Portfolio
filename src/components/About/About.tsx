@@ -1,4 +1,4 @@
-import SectionTitle from "../UI/SectionTitle";
+import SectionTitle from "../ui/SectionTitle";
 import { Card } from "@/components/ui/card";
 
 

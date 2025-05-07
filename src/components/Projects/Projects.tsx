@@ -1,6 +1,6 @@
 
 import { useState } from "react";
-import SectionTitle from "../UI/SectionTitle";
+import SectionTitle from "../ui/SectionTitle";
 import { Card } from "@/components/ui/card";
 import { ArrowRight, Github, Link } from "lucide-react";
 import { Button } from "@/components/ui/button";

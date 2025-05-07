@@ -1,5 +1,5 @@
 import { useRef, useState, useEffect } from "react";
-import SectionTitle from "../UI/SectionTitle";
+import SectionTitle from "../ui/SectionTitle";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import {
