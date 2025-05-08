@@ -1,14 +1,21 @@
 import { MongoClient } from 'mongodb';
 
-const uri = process.env.MONGODB_URI;
-const options = {};
-
 export default async function handler(req, res) {
-  const client = new MongoClient(uri, options);
+  // Improved error logging
+  if (!process.env.MONGO_URI) {
+    console.error("MONGO_URI environment variable not found");
+    return res.status(500).json({ error: "MongoDB connection string not found" });
+  }
+  
+  // Add connection options for better reliability
+  const client = new MongoClient(process.env.MONGO_URI, {
+    connectTimeoutMS: 10000,
+    serverSelectionTimeoutMS: 10000
+  });
   
   try {
     await client.connect();
-    const database = client.db("your_db_name");
+    const database = client.db("portfolio");
     const collection = database.collection("testimonials");
     
     if (req.method === 'GET') {
@@ -28,6 +35,7 @@ export default async function handler(req, res) {
     
     return res.status(405).json({ message: 'Method not allowed' });
   } catch (error) {
+    console.error("MongoDB error:", error);
     return res.status(500).json({ message: error.message });
   } finally {
     await client.close();

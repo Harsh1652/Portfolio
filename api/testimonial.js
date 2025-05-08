@@ -1,1 +1,0 @@
-const uri = process.env.MONGO_URI; // Change from MONGODB_URI to match your env variable name
