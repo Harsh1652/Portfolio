@@ -43,6 +43,8 @@ const Testimonials = () => {
   const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const baseURL = process.env.NEXT_PUBLIC_API_BASE_URL;
+
   
   // Create embla carousel with autoplay plugin
   const [emblaRef] = useEmblaCarousel({ loop: true }, [
@@ -54,7 +56,7 @@ const Testimonials = () => {
     const fetchTestimonials = async () => {
       try {
         setIsLoading(true);
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/testimonials`);
+        const response = await fetch(`${baseURL}/api/testimonials`);
         
         if (!response.ok) {
           throw new Error('Failed to fetch testimonials');
@@ -92,7 +94,7 @@ const Testimonials = () => {
         avatar: "https://ui-avatars.com/api/?name=" + encodeURIComponent(formData.get('name') as string)
       };
       
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/testimonials`, {
+      const response = await fetch(`${baseURL}/api/testimonials`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
