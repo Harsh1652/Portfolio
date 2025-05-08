@@ -9,7 +9,7 @@ const Hero = () => {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           <div className="order-2 lg:order-1 opacity-0 animate-fade-in">
             <p className="text-highlight-teal text-lg font-medium mb-4 animate-pulse-slow">
-              Backend Developer | Problem Solver | System Architect
+              Backend Developer | Problem Solver | Full Stack Developer
             </p>
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
               Hi, I'm <span className="text-gradient">Harsh Gupta</span>
