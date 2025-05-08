@@ -13,15 +13,9 @@ import { Input } from "@/components/UI/input";
 import { Textarea } from "@/components/UI/textarea";
 import { useToast } from "@/components/UI/use-toast";
 import { Star, Loader2, ChevronLeft, ChevronRight } from "lucide-react";
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
-} from "@/components/UI/carousel";
 import useEmblaCarousel from 'embla-carousel-react';
 import Autoplay from 'embla-carousel-autoplay';
+
 // Define the testimonial type based on your MongoDB schema
 interface Testimonial {
   _id: string;
@@ -34,6 +28,11 @@ interface Testimonial {
   createdAt: string;
 }
 
+// Your API base URL - adjust based on your development/production environment
+const API_BASE_URL = process.env.NODE_ENV === 'production' 
+  ? '/api' // Production - assumes API is on same domain
+  : 'http://localhost:5000/api'; // Development - Update port if different
+
 const Testimonials = () => {
   const { toast } = useToast();
   const formRef = useRef<HTMLFormElement>(null);
@@ -43,11 +42,9 @@ const Testimonials = () => {
   const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const baseURL = process.env.NEXT_PUBLIC_API_BASE_URL;
-
   
   // Create embla carousel with autoplay plugin
-  const [emblaRef] = useEmblaCarousel({ loop: true }, [
+  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true }, [
     Autoplay({ delay: 5000, stopOnInteraction: false })
   ]);
   
@@ -56,10 +53,12 @@ const Testimonials = () => {
     const fetchTestimonials = async () => {
       try {
         setIsLoading(true);
-        const response = await fetch(`${baseURL}/api/testimonials`);
+        const response = await fetch(`${API_BASE_URL}/testimonials`);
         
         if (!response.ok) {
-          throw new Error('Failed to fetch testimonials');
+          const errorText = await response.text();
+          console.error('Error response:', errorText);
+          throw new Error(`Failed to fetch testimonials: ${response.status} ${response.statusText}`);
         }
         
         const data = await response.json();
@@ -94,7 +93,7 @@ const Testimonials = () => {
         avatar: "https://ui-avatars.com/api/?name=" + encodeURIComponent(formData.get('name') as string)
       };
       
-      const response = await fetch(`${baseURL}/api/testimonials`, {
+      const response = await fetch(`${API_BASE_URL}/testimonials`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -103,7 +102,9 @@ const Testimonials = () => {
       });
       
       if (!response.ok) {
-        throw new Error('Failed to submit testimonial');
+        const errorText = await response.text();
+        console.error('Error response:', errorText);
+        throw new Error(`Failed to submit testimonial: ${response.status} ${response.statusText}`);
       }
       
       // Add the new testimonial to the list
@@ -131,6 +132,10 @@ const Testimonials = () => {
     }
   };
 
+  // Handle manually clicking the carousel navigation buttons
+  const scrollPrev = () => emblaApi?.scrollPrev();
+  const scrollNext = () => emblaApi?.scrollNext();
+
   return (
     <section id="testimonials" className="bg-dark-400/50">
       <div className="container">
@@ -155,7 +160,7 @@ const Testimonials = () => {
           <div className="relative py-10">
             <div className="overflow-hidden" ref={emblaRef}>
               <div className="flex">
-                {testimonials.map((testimonial, index) => (
+                {testimonials.map((testimonial) => (
                   <div key={testimonial._id} className="flex-[0_0_100%] min-w-0 md:flex-[0_0_50%] lg:flex-[0_0_33.333%] pl-4">
                     <Card className="glass-card p-6 h-full">
                       <div className="flex items-center mb-4">
@@ -190,10 +195,16 @@ const Testimonials = () => {
                 ))}
               </div>
             </div>
-            <button className="absolute -left-4 top-1/2 -translate-y-1/2 bg-dark-300 border border-gray-700 text-white hover:bg-dark-200 rounded-full p-2">
+            <button 
+              onClick={scrollPrev}
+              className="absolute -left-4 top-1/2 -translate-y-1/2 bg-dark-300 border border-gray-700 text-white hover:bg-dark-200 rounded-full p-2"
+            >
               <ChevronLeft size={18} />
             </button>
-            <button className="absolute -right-4 top-1/2 -translate-y-1/2 bg-dark-300 border border-gray-700 text-white hover:bg-dark-200 rounded-full p-2">
+            <button 
+              onClick={scrollNext}
+              className="absolute -right-4 top-1/2 -translate-y-1/2 bg-dark-300 border border-gray-700 text-white hover:bg-dark-200 rounded-full p-2"
+            >
               <ChevronRight size={18} />
             </button>
           </div>
