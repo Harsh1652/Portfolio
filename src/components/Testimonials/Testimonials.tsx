@@ -54,7 +54,7 @@ const Testimonials = () => {
     const fetchTestimonials = async () => {
       try {
         setIsLoading(true);
-        const response = await fetch('http://localhost:5000/api/testimonials');
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/testimonials`);
         
         if (!response.ok) {
           throw new Error('Failed to fetch testimonials');
