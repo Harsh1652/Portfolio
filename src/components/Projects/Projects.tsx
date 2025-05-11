@@ -38,6 +38,16 @@ const Projects = () => {
     },
     {
       id: 4,
+      title: "Portfolio AI Assistant",
+      description: "An AI-powered conversational assistant that provides personalized information about my professional background, projects, skills, and experience. This chatbot uses natural language processing to deliver concise, relevant responses to visitor queries.",
+      techStack: ["React", "Node.js", "Express.js", "MongoDB", "OpenAI API (GPT-3.5 Turbo)", "Cohere AI (Embeddings)"],
+      image: "https://plus.unsplash.com/premium_photo-1677094310893-0d6594c211ea?q=80&w=2664&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      emoji: "🤖",
+      githubLink: "https://github.com/Harsh1652/Portfolio_Chat-Bot",
+      liveLink: "https://portfolio-chatbot-ecru.vercel.app/"
+    },
+    {
+      id: 5,
       title: "Balaji Exports Business Website",
       description: "Freelance project to build a business website for Balaji Exports using React and MUI.",
       techStack: ["React", "Material-UI", "Firebase"],
