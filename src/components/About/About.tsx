@@ -22,8 +22,14 @@ const About = () => {
     {
       title: "Backend Developer Intern",
       company: "Excollo",
-      period: "Jan 2025 - Present",
+      period: "Feb 2025 - Present",
       description: "Contributed to a full-stack order management system (Crudo), integrated with SWIL ERP. Developed and maintained key modules including Order, Customer, Notification, and Store. Working with Node.js, Express, MongoDB, JWT, REST APIs, and Cron jobs. Currently implementing vector database for customer clustering and purchase pattern analysis."
+    },
+    {
+      title: "Freelance Software Developer",
+      company: "Balaji Exports",
+      period: "May 2025",
+      description: "Build a business website for Balaji Exports using React and MUI."
     }
   ];
 
@@ -44,7 +50,7 @@ const About = () => {
                 As a backend-focused software developer with full-stack capabilities, I'm driven by the challenges of designing secure, scalable systems that solve real problems. Currently working at Excollo, I get to pursue my passion for technology while continuously expanding my skills.
               </p>
               <p>
-                I specialize in Java and Spring Boot development, with a strong focus on system architecture and security. My approach combines technical precision with creative problem-solving to build robust applications that perform seamlessly while maintaining high security standards.
+                My core strengths lie in Node.js, Express, and MongoDB, alongside a strong foundation in Java and Spring Boot. with a strong focus on system architecture and security. My approach combines technical precision with creative problem-solving to build robust applications that perform seamlessly while maintaining high security standards.
               </p>
               <p>
                 When I'm not coding, you'll find me exploring new technologies, contributing to open-source projects, and continuously learning to stay ahead in the ever-evolving tech landscape.
