@@ -23,13 +23,49 @@ const About = () => {
       title: "Backend Developer Intern",
       company: "Excollo",
       period: "Feb 2025 - Present",
-      description: "Contributed to a full-stack order management system (Crudo), integrated with SWIL ERP. Developed and maintained key modules including Order, Customer, Notification, and Store. Working with Node.js, Express, MongoDB, JWT, REST APIs, and Cron jobs. Currently implementing vector database for customer clustering and purchase pattern analysis."
+      description: "Contributed to a full-stack order management system (Crudo), integrated with SWIL ERP. Developed and maintained key modules including Order, Customer, Notification, and Store. Working with Node.js, Express, MongoDB, JWT, REST APIs, and Cron jobs. Currently implementing vector database for customer clustering and purchase pattern analysis.",
+      details: [
+        {
+          text: "Contributed to a full-stack order management system",
+          highlight: "(Crudo)",
+          end: ", integrated with SWIL ERP"
+        },
+        {
+          text: "Developed and maintained modules: ",
+          highlights: ["Order", "Customer", "Notification", "Store"]
+        },
+        {
+          text: "Worked with ",
+          highlights: ["Node.js", "Express", "MongoDB", "JWT", "REST APIs", "Cron jobs"]
+        },
+        {
+          text: "Implementing vector database for customer clustering and purchase pattern analysis"
+        }
+      ]
     },
     {
       title: "Freelance Software Developer",
       company: "Balaji Exports",
       period: "May 2025",
-      description: "Build a business website for Balaji Exports using React and MUI."
+      description: "Built a business website for Balaji Exports using React and MUI.",
+      details: [
+        {
+          text: "Designed and developed a responsive business website for",
+          highlight: "Balaji Exports",
+          end: ", an import/export company"
+        },
+        {
+          text: "Implemented UI components using ",
+          highlights: ["React", "Material-UI", "CSS Grid", "Flexbox"]
+        },
+        {
+          text: "Set up Firebase for ",
+          highlights: ["Authentication", "Database", "Hosting"]
+        },
+        {
+          text: "Optimized for SEO and performance with 90+ Lighthouse score"
+        }
+      ]
     }
   ];
 
@@ -101,22 +137,23 @@ const About = () => {
                   
                   <div className="bg-dark-500/30 rounded-lg p-4 backdrop-blur-sm">
                     <ul className="space-y-3">
-                      <li className="flex items-start">
-                        <span className="text-highlight-teal mr-2 mt-1">▹</span>
-                        <span className="text-gray-300">Contributed to a full-stack order management system <span className="text-highlight-teal font-medium">(Crudo)</span>, integrated with SWIL ERP</span>
-                      </li>
-                      <li className="flex items-start">
-                        <span className="text-highlight-teal mr-2 mt-1">▹</span>
-                        <span className="text-gray-300">Developed and maintained modules: <span className="text-white">Order</span>, <span className="text-white">Customer</span>, <span className="text-white">Notification</span>, and <span className="text-white">Store</span></span>
-                      </li>
-                      <li className="flex items-start">
-                        <span className="text-highlight-teal mr-2 mt-1">▹</span>
-                        <span className="text-gray-300">Worked with <span className="text-white">Node.js</span>, <span className="text-white">Express</span>, <span className="text-white">MongoDB</span>, <span className="text-white">JWT</span>, <span className="text-white">REST APIs</span>, <span className="text-white">Cron jobs</span></span>
-                      </li>
-                      <li className="flex items-start">
-                        <span className="text-highlight-teal mr-2 mt-1">▹</span>
-                        <span className="text-gray-300">Implementing vector database for customer clustering and purchase pattern analysis</span>
-                      </li>
+                      {item.details.map((detail, detailIndex) => (
+                        <li key={detailIndex} className="flex items-start">
+                          <span className="text-highlight-teal mr-2 mt-1">▹</span>
+                          <span className="text-gray-300">
+                            {detail.text}
+                            {detail.highlight && <span className="text-highlight-teal font-medium"> {detail.highlight}</span>}
+                            {detail.end && detail.end}
+                            
+                            {detail.highlights && detail.highlights.map((highlight, highlightIndex) => (
+                              <span key={highlightIndex}>
+                                <span className="text-white">{highlight}</span>
+                                {highlightIndex < detail.highlights.length - 1 && <span>, </span>}
+                              </span>
+                            ))}
+                          </span>
+                        </li>
+                      ))}
                     </ul>
                   </div>
                 </Card>
