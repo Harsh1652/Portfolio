@@ -8,6 +8,19 @@ export default defineConfig(({ mode }) => ({
   server: {
     host: "::",
     port: 8080,
+    proxy: {
+      '/portfolio-chatbot': {
+        target: 'https://portfolio-chatbot-ecru.vercel.app',
+        changeOrigin: true,
+        secure: false,
+        rewrite: (path) => path.replace(/^\/portfolio-chatbot/, '')
+      },
+      '/api': {
+        target: 'http://localhost:5000',
+        changeOrigin: true,
+        secure: false
+      }
+    }
   },
   plugins: [
     react(),
