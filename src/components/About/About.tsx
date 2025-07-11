@@ -8,7 +8,7 @@ const About = () => {
       degree: "Master of Computer Applications (MCA)",
       institution: "UPES",
       period: "2023 - 2025",
-      description: "Currently pursuing advanced studies focusing on software development and system architecture."
+      description: "Completed advanced studies focusing on software development and system architecture."
     },
     {
       degree: "Bachelor of Computer Applications (BCA)",
@@ -20,10 +20,35 @@ const About = () => {
 
   const Experience = [
     {
+      title: "Software Developer (Full Time)",
+      company: "Excollo",
+      period: "June 2025 - Present",
+      description: "Promoted to full-time Software Developer. Building AI automation agents and working on advanced backend systems.",
+      details: [
+        {
+          text: "Projects: AI Agent Automation with n8n"
+        },
+        {
+          text: "Building AI automation agents using n8n for document parsing, data extraction, and workflow automation."
+        },
+        {
+          text: "Collaborating on ",
+          highlights: ["prompt engineering", "LLM integration", "vector search using OpenAI + Pinecone"]
+        },
+        {
+          text: "Continuing to develop and maintain key modules including Order, Customer, Notification, and Store."
+        },
+        {
+          text: "Working with ",
+          highlights: ["Node.js", "Express", "MongoDB", "JWT", "REST APIs", "Cron jobs"]
+        }
+      ]
+    },
+    {
       title: "Backend Developer Intern",
       company: "Excollo",
-      period: "Feb 2025 - Present",
-      description: "Contributed to a full-stack order management system (Crudo), integrated with SWIL ERP. Developed and maintained key modules including Order, Customer, Notification, and Store. Working with Node.js, Express, MongoDB, JWT, REST APIs, and Cron jobs. Currently implementing vector database for customer clustering and purchase pattern analysis.",
+      period: "Feb 2025 - May 2025",
+      description: "Contributed to a full-stack order management system (Crudo), integrated with SWIL ERP. Developed and maintained key modules including Order, Customer, Notification, and Store. Worked with Node.js, Express, MongoDB, JWT, REST APIs, and Cron jobs. Implemented vector database for customer clustering and purchase pattern analysis.",
       details: [
         {
           text: "Contributed to a full-stack order management system",
@@ -39,7 +64,7 @@ const About = () => {
           highlights: ["Node.js", "Express", "MongoDB", "JWT", "REST APIs", "Cron jobs"]
         },
         {
-          text: "Implementing vector database for customer clustering and purchase pattern analysis"
+          text: "Implemented vector database for customer clustering and purchase pattern analysis"
         }
       ]
     },
@@ -47,23 +72,16 @@ const About = () => {
       title: "Freelance Software Developer",
       company: "Balaji Exports",
       period: "May 2025",
-      description: "Built a business website for Balaji Exports using React and MUI.",
+      description: "Developed a responsive business website for Balaji Exports using Next.js and TypeScript, hosted on Firebase. Built a custom SEO panel (Node.js + React) for managing SEO tags and blogs, with all data stored and fetched from MongoDB.",
       details: [
         {
-          text: "Designed and developed a responsive business website for",
-          highlight: "Balaji Exports",
-          end: ", an import/export company"
+          text: "Built a responsive business website using Next.js, TypeScript, and Firebase."
         },
         {
-          text: "Implemented UI components using ",
-          highlights: ["React", "Material-UI", "CSS Grid", "Flexbox"]
+          text: "Developed a custom SEO panel (Node.js, React) with MongoDB integration."
         },
         {
-          text: "Set up Firebase for ",
-          highlights: ["Authentication", "Database", "Hosting"]
-        },
-        {
-          text: "Optimized for SEO and performance with 90+ Lighthouse score"
+          text: "Enabled dynamic SEO and blog management, optimized for high performance."
         }
       ]
     }
@@ -83,13 +101,16 @@ const About = () => {
             <h3 className="text-xl font-semibold mb-4 text-white">Who I Am</h3>
             <div className="space-y-4 text-gray-300">
               <p>
-                As a backend-focused software developer with full-stack capabilities, I'm driven by the challenges of designing secure, scalable systems that solve real problems. Currently working at Excollo, I get to pursue my passion for technology while continuously expanding my skills.
+                Hi, I'm Harsh Gupta — a dedicated Software Engineer with a strong focus on backend development using Java (Spring Boot) and Node.js. I enjoy building scalable APIs and robust systems, and I've worked on projects ranging from e-commerce backends to AI-powered chatbots that use semantic search and embeddings.
               </p>
               <p>
-                My core strengths lie in Node.js, Express, and MongoDB, alongside a strong foundation in Java and Spring Boot. with a strong focus on system architecture and security. My approach combines technical precision with creative problem-solving to build robust applications that perform seamlessly while maintaining high security standards.
+                I love the problem-solving side of software engineering — whether it's designing efficient database schemas with MongoDB, optimizing API performance, or integrating external AI APIs into real-world applications.
               </p>
               <p>
-                When I'm not coding, you'll find me exploring new technologies, contributing to open-source projects, and continuously learning to stay ahead in the ever-evolving tech landscape.
+                Currently, I'm working full-time as a Software Engineer and continuously sharpening my skills in backend architecture, system design, and AI integrations. I'm always excited to explore new technologies and contribute to meaningful products that make a difference.
+              </p>
+              <p>
+                When I'm not coding, I enjoy diving into AI concepts, tech podcasts, and experimenting with new tools to stay ahead in the ever-evolving dev world.
               </p>
             </div>
           </div>

@@ -6,33 +6,38 @@ const Skills = () => {
   const skillsData = [
     {
       category: "Languages",
-      skills: ["Java", "Kotlin"],
+      skills: ["Java", "JavaScript"],
       color: "from-blue-500 to-blue-700"
     },
     {
-      category: "Frontend",
-      skills: ["HTML", "CSS", "JavaScript", "React"],
-      color: "from-purple-500 to-purple-700"
+      category: "Concepts",
+      skills: ["Object-Oriented Programming (OOP)", "RESTful Architecture"],
+      color: "from-teal-500 to-teal-700"
     },
     {
       category: "Backend",
-      skills: ["Jakarta EE", "Spring Boot", "Hibernate", "Node.js", "Express"],
+      skills: ["Node.js", "Express", "Spring Boot", "Jakarta EE", "Hibernate"],
       color: "from-green-500 to-green-700"
     },
     {
+      category: "Frontend",
+      skills: ["HTML", "CSS", "Thymeleaf", "MUI"],
+      color: "from-purple-500 to-purple-700"
+    },
+    {
       category: "Databases",
-      skills: ["MySQL", "MongoDB"],
+      skills: ["MongoDB", "MySQL", "Pinecone (Vector DB)"] ,
       color: "from-yellow-500 to-yellow-700"
     },
     {
-      category: "Tools",
-      skills: ["Maven", "Git", "Docker"],
+      category: "AI Tools",
+      skills: ["OpenAI GPT", "Cohere", "n8n", "Prompt Engineering", "RAG (Retrieval-Augmented Generation)"] ,
       color: "from-pink-500 to-pink-700"
     },
     {
-      category: "Concepts",
-      skills: ["OOP", "REST APIs", "Microservices", "Real-time systems", "Security"],
-      color: "from-teal-500 to-teal-700"
+      category: "Tools & Platforms",
+      skills: ["VS Code", "Cursor", "Postman", "Git", "GitHub", "Maven", "REST APIs", "JWT", "Socket.io"],
+      color: "from-gray-500 to-gray-700"
     }
   ];
 

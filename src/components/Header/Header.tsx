@@ -19,7 +19,7 @@ const Header = () => {
   ];
 
   const openResume = () => {
-    window.open('https://drive.google.com/file/d/1WTa0MMUmavW9f0nB2AjpuU0PNtDPdMK4/view?usp=drive_link', '_blank');
+    window.open('https://drive.google.com/file/d/16OFwQUTxEObJIOXuXv7-DCwVXtxfYTEq/view?usp=sharing', '_blank');
   };
 
   useEffect(() => {

@@ -8,7 +8,8 @@ import { Button } from "@/components/UI/button";
 const Projects = () => {
   const [hoveredId, setHoveredId] = useState<number | null>(null);
   
-  const projectsData = [
+  // Personal Projects
+  const personalProjectsData = [
     {
       id: 1,
       title: "ShopEase",
@@ -45,16 +46,19 @@ const Projects = () => {
       emoji: "🤖",
       githubLink: "https://github.com/Harsh1652/Portfolio_Chat-Bot",
       liveLink: "https://portfolio-chatbot-ecru.vercel.app/"
-    },
+    }
+  ];
+
+  // Freelance Projects
+  const freelanceProjectsData = [
     {
       id: 5,
       title: "Balaji Exports Business Website",
-      description: "Freelance project to build a business website for Balaji Exports using React and MUI.",
-      techStack: ["React", "Material-UI", "Firebase"],
+      description: "Developed a responsive business website. Built a custom SEO panel for managing SEO tags and blogs, with all data stored and fetched from MongoDB.",
+      techStack: ["React", "Material-UI", "Firebase", "Node.js", "MongoDB", "Next.js", "TypeScript"],
       image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=2015&auto=format&fit=crop",
       emoji: "💼",
-      githubLink: "https://github.com/Harsh1652/balaji-exports",
-      liveLink: "#"
+      
     }
   ];
 
@@ -65,9 +69,10 @@ const Projects = () => {
           subtitle="My work"
           title="Featured Projects"
         />
-        
+        {/* Personal Projects Section */}
+        <h2 className="text-2xl font-bold mt-8 mb-4 text-white">Personal Projects</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {projectsData.map((project, index) => (
+          {personalProjectsData.map((project, index) => (
             <Card 
               key={project.id} 
               className="glass-card overflow-hidden hover-card opacity-0 animate-fade-in"
@@ -132,6 +137,49 @@ const Projects = () => {
                     </a>
                   </Button>
                 </div>
+              </div>
+            </Card>
+          ))}
+        </div>
+        {/* Freelance Projects Section */}
+        <h2 className="text-2xl font-bold mt-12 mb-4 text-white">Freelance Projects</h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          {freelanceProjectsData.map((project, index) => (
+            <Card 
+              key={project.id} 
+              className="glass-card overflow-hidden hover-card opacity-0 animate-fade-in"
+              style={{ animationDelay: `${index * 100}ms` }}
+              onMouseEnter={() => setHoveredId(project.id)}
+              onMouseLeave={() => setHoveredId(null)}
+            >
+              <div className="relative h-60 overflow-hidden">
+                <img 
+                  src={project.image} 
+                  alt={project.title} 
+                  className="w-full h-full object-cover transition-transform duration-700 ease-in-out"
+                  style={{
+                    transform: hoveredId === project.id ? "scale(1.05)" : "scale(1)"
+                  }}
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-dark-300 to-transparent opacity-80"></div>
+                <div className="absolute top-4 left-4 text-4xl">
+                  {project.emoji}
+                </div>
+              </div>
+              <div className="p-6">
+                <h3 className="text-xl font-semibold mb-2">{project.title}</h3>
+                <p className="text-gray-300 mb-4">{project.description}</p>
+                <div className="flex flex-wrap gap-2 mb-6">
+                  {project.techStack.map((tech, techIndex) => (
+                    <span 
+                      key={techIndex} 
+                      className="bg-dark-200 px-2 py-1 rounded text-xs text-gray-300"
+                    >
+                      {tech}
+                    </span>
+                  ))}
+                </div>
+                {/* Removed GitHub and View Details buttons for freelance projects */}
               </div>
             </Card>
           ))}
