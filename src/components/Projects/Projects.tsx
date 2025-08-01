@@ -58,9 +58,13 @@ const Projects = () => {
       techStack: ["React", "Material-UI", "Firebase", "Node.js", "MongoDB", "Next.js", "TypeScript"],
       image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=2015&auto=format&fit=crop",
       emoji: "💼",
-      
+      githubLink: undefined,
+      liveLink: undefined
     }
   ];
+
+  // Combine all projects
+  const allProjects = [...personalProjectsData, ...freelanceProjectsData];
 
   return (
     <section id="projects">
@@ -69,10 +73,10 @@ const Projects = () => {
           subtitle="My work"
           title="Featured Projects"
         />
-        {/* Personal Projects Section */}
-        <h2 className="text-2xl font-bold mt-8 mb-4 text-white">Personal Projects</h2>
+        {/* Projects Section */}
+        {/* <h2 className="text-2xl font-bold mt-8 mb-4 text-white">Personal Projects</h2> */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {personalProjectsData.map((project, index) => (
+          {allProjects.map((project, index) => (
             <Card 
               key={project.id} 
               className="glass-card overflow-hidden hover-card opacity-0 animate-fade-in"
@@ -112,11 +116,13 @@ const Projects = () => {
                 
                 <div className="flex justify-between items-center">
                   <div className="flex space-x-2">
-                    <Button size="icon" variant="outline" asChild>
-                      <a href={project.githubLink} target="_blank" rel="noopener noreferrer" aria-label="GitHub repository">
-                        <Github size={18} />
-                      </a>
-                    </Button>
+                    {project.githubLink && (
+                      <Button size="icon" variant="outline" asChild>
+                        <a href={project.githubLink} target="_blank" rel="noopener noreferrer" aria-label="GitHub repository">
+                          <Github size={18} />
+                        </a>
+                      </Button>
+                    )}
                     {project.liveLink && (
                     <Button size="icon" variant="outline" asChild>
                       <a href={project.liveLink} target="_blank" rel="noopener noreferrer" aria-label="Live demo">
@@ -126,24 +132,26 @@ const Projects = () => {
                   )}
                   </div>
                   
-                  <Button 
-                    variant="ghost" 
-                    size="sm" 
-                    className="text-highlight-teal hover:text-highlight-teal/80"
-                    asChild
-                  >
-                    <a href={project.githubLink} target="_blank" rel="noopener noreferrer">
-                      View Details <ArrowRight size={14} className="ml-1" />
-                    </a>
-                  </Button>
+                  {project.githubLink && (
+                    <Button 
+                      variant="ghost" 
+                      size="sm" 
+                      className="text-highlight-teal hover:text-highlight-teal/80"
+                      asChild
+                    >
+                      <a href={project.githubLink} target="_blank" rel="noopener noreferrer">
+                        View Details <ArrowRight size={14} className="ml-1" />
+                      </a>
+                    </Button>
+                  )}
                 </div>
               </div>
             </Card>
           ))}
         </div>
         {/* Freelance Projects Section */}
-        <h2 className="text-2xl font-bold mt-12 mb-4 text-white">Freelance Projects</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        {/* <h2 className="text-2xl font-bold mt-12 mb-4 text-white">Freelance Projects</h2> */}
+        {/* <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {freelanceProjectsData.map((project, index) => (
             <Card 
               key={project.id} 
@@ -180,10 +188,10 @@ const Projects = () => {
                   ))}
                 </div>
                 {/* Removed GitHub and View Details buttons for freelance projects */}
-              </div>
+              {/* </div>
             </Card>
           ))}
-        </div>
+        </div> */}
       </div>
     </section>
   );

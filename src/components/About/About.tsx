@@ -68,23 +68,23 @@ const About = () => {
         }
       ]
     },
-    {
-      title: "Freelance Software Developer",
-      company: "Balaji Exports",
-      period: "May 2025",
-      description: "Developed a responsive business website for Balaji Exports using Next.js and TypeScript, hosted on Firebase. Built a custom SEO panel (Node.js + React) for managing SEO tags and blogs, with all data stored and fetched from MongoDB.",
-      details: [
-        {
-          text: "Built a responsive business website using Next.js, TypeScript, and Firebase."
-        },
-        {
-          text: "Developed a custom SEO panel (Node.js, React) with MongoDB integration."
-        },
-        {
-          text: "Enabled dynamic SEO and blog management, optimized for high performance."
-        }
-      ]
-    }
+    // {
+    //   title: "Freelance Software Developer",
+    //   company: "Balaji Exports",
+    //   period: "May 2025",
+    //   description: "Developed a responsive business website for Balaji Exports using Next.js and TypeScript, hosted on Firebase. Built a custom SEO panel (Node.js + React) for managing SEO tags and blogs, with all data stored and fetched from MongoDB.",
+    //   details: [
+    //     {
+    //       text: "Built a responsive business website using Next.js, TypeScript, and Firebase."
+    //     },
+    //     {
+    //       text: "Developed a custom SEO panel (Node.js, React) with MongoDB integration."
+    //     },
+    //     {
+    //       text: "Enabled dynamic SEO and blog management, optimized for high performance."
+    //     }
+    //   ]
+    // }
   ];
 
   return (
