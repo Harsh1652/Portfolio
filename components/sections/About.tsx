@@ -34,7 +34,7 @@ function Counter({ value, suffix }: { value: number; suffix: string }) {
 }
 
 const containerVariants = { hidden: {}, visible: { transition: { staggerChildren: 0.08 } } };
-const itemVariants = { hidden: { opacity: 0, y: 50, filter: "blur(6px)" }, visible: { opacity: 1, y: 0, filter: "blur(0px)", transition: { duration: 0.85, ease: [0.23, 1, 0.32, 1] } } };
+const itemVariants = { hidden: { opacity: 0, y: 50, filter: "blur(6px)" }, visible: { opacity: 1, y: 0, filter: "blur(0px)", transition: { duration: 0.85, ease: [0.23, 1, 0.32, 1] as [number, number, number, number] } } };
 
 export default function About() {
   const ref = useRef(null);
