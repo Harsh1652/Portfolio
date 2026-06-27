@@ -200,6 +200,7 @@ function SiteCaseStudyModal({ site, onClose }: { site: typeof sites[0]; onClose:
   useEffect(() => {
     lenis.stop();
     document.body.style.overflow = "hidden";
+
     const handleWheel = (e: WheelEvent) => {
       const el = scrollRef.current;
       if (!el) return;
@@ -209,11 +210,31 @@ function SiteCaseStudyModal({ site, onClose }: { site: typeof sites[0]; onClose:
         el.scrollTop += e.deltaY;
       }
     };
+
+    let touchStartY = 0;
+    const handleTouchStart = (e: TouchEvent) => {
+      touchStartY = e.touches[0].clientY;
+    };
+    const handleTouchMove = (e: TouchEvent) => {
+      const el = scrollRef.current;
+      if (!el) return;
+      if (el === e.target || el.contains(e.target as Node)) {
+        e.stopPropagation();
+        const dy = touchStartY - e.touches[0].clientY;
+        touchStartY = e.touches[0].clientY;
+        el.scrollTop += dy;
+      }
+    };
+
     window.addEventListener("wheel", handleWheel, { capture: true, passive: false });
+    window.addEventListener("touchstart", handleTouchStart, { capture: true, passive: true });
+    window.addEventListener("touchmove", handleTouchMove, { capture: true, passive: true });
     return () => {
       lenis.start();
       document.body.style.overflow = "";
       window.removeEventListener("wheel", handleWheel, { capture: true });
+      window.removeEventListener("touchstart", handleTouchStart, { capture: true });
+      window.removeEventListener("touchmove", handleTouchMove, { capture: true });
     };
   }, []);
 
@@ -323,9 +344,6 @@ function CaseStudyModal({ project, onClose }: { project: typeof projects[0]; onC
     lenis.stop();
     document.body.style.overflow = "hidden";
 
-    // Lenis intercepts wheel events on window before they reach the panel.
-    // We register our own capturing listener first to hijack events that
-    // originate inside the scroll container and manually drive scrollTop.
     const handleWheel = (e: WheelEvent) => {
       const el = scrollRef.current;
       if (!el) return;
@@ -336,12 +354,31 @@ function CaseStudyModal({ project, onClose }: { project: typeof projects[0]; onC
       }
     };
 
+    let touchStartY = 0;
+    const handleTouchStart = (e: TouchEvent) => {
+      touchStartY = e.touches[0].clientY;
+    };
+    const handleTouchMove = (e: TouchEvent) => {
+      const el = scrollRef.current;
+      if (!el) return;
+      if (el === e.target || el.contains(e.target as Node)) {
+        e.stopPropagation();
+        const dy = touchStartY - e.touches[0].clientY;
+        touchStartY = e.touches[0].clientY;
+        el.scrollTop += dy;
+      }
+    };
+
     window.addEventListener("wheel", handleWheel, { capture: true, passive: false });
+    window.addEventListener("touchstart", handleTouchStart, { capture: true, passive: true });
+    window.addEventListener("touchmove", handleTouchMove, { capture: true, passive: true });
 
     return () => {
       lenis.start();
       document.body.style.overflow = "";
       window.removeEventListener("wheel", handleWheel, { capture: true });
+      window.removeEventListener("touchstart", handleTouchStart, { capture: true });
+      window.removeEventListener("touchmove", handleTouchMove, { capture: true });
     };
   }, []);
 
