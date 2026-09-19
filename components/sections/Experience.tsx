@@ -1,6 +1,7 @@
 "use client";
 import { useRef, useState } from "react";
 import { motion, useInView, AnimatePresence } from "framer-motion";
+import { ChevronDown, TrendingUp } from "lucide-react";
 
 const experiences = [
   {
@@ -20,68 +21,67 @@ const experiences = [
 ];
 
 function ExperienceItem({ exp, index }: { exp: typeof experiences[0]; index: number }) {
-  const [expanded, setExpanded] = useState(false);
+  const [expanded, setExpanded] = useState(true);
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-5%" });
 
   return (
     <motion.div
       ref={ref}
-      initial={{ opacity: 0, x: -20 }}
-      animate={inView ? { opacity: 1, x: 0 } : {}}
-      transition={{ duration: 0.6, delay: index * 0.12, ease: [0.23, 1, 0.32, 1] }}
-      className="relative pl-6 sm:pl-8"
+      initial={{ opacity: 0, y: 30 }}
+      animate={inView ? { opacity: 1, y: 0 } : {}}
+      transition={{ duration: 0.7, delay: index * 0.12, ease: [0.23, 1, 0.32, 1] }}
+      className="grid grid-cols-1 lg:grid-cols-[220px_1fr] gap-4 lg:gap-10 py-8 sm:py-10 border-t"
+      style={{ borderColor: "rgba(255,255,255,0.08)" }}
     >
-      <div className="absolute left-0 top-0 bottom-0 w-px" style={{ background: `linear-gradient(to bottom, ${exp.color}40, transparent)` }} />
-      <div className="absolute left-0 top-6 w-2 h-2 rounded-full -translate-x-[3px]" style={{ background: exp.color, boxShadow: `0 0 12px ${exp.color}60` }} />
-
-      <div className="pb-10 sm:pb-12">
-        <div className="flex items-start justify-between mb-3 gap-3">
-          <div className="min-w-0">
-            <span className="font-mono text-xs tracking-widest mb-1 block" style={{ color: exp.color, fontFamily: "'JetBrains Mono', monospace" }}>{exp.year}</span>
-            <h3 className="font-display font-bold text-xl sm:text-2xl" style={{ fontFamily: "'Syne', sans-serif" }}>{exp.company}</h3>
-            <div className="flex flex-wrap items-center gap-1 sm:gap-2 mt-1">
-              <span className="text-sm text-white/50" style={{ fontFamily: "'DM Sans', sans-serif" }}>{exp.role}</span>
-              {exp.location && <><span className="text-white/20 hidden sm:inline">·</span><span className="text-xs text-white/30 font-mono hidden sm:inline" style={{ fontFamily: "'JetBrains Mono', monospace" }}>{exp.location}</span></>}
-            </div>
-          </div>
-          <button
-            onClick={() => setExpanded(!expanded)}
-            className="w-8 h-8 rounded-lg glass flex items-center justify-center text-white/40 hover:text-white transition-all flex-shrink-0"
-          >
-            <motion.span animate={{ rotate: expanded ? 45 : 0 }} className="text-lg leading-none">+</motion.span>
-          </button>
+      {/* Meta column */}
+      <div className="flex lg:flex-col items-start justify-between lg:justify-start gap-3">
+        <div>
+          <span className="inline-flex items-center gap-2 text-xs tracking-widest" style={{ color: exp.color, fontFamily: "var(--font-mono)" }}>
+            <span className="w-1.5 h-1.5 rounded-full" style={{ background: exp.color, boxShadow: `0 0 10px ${exp.color}` }} />
+            {exp.year}
+          </span>
+          <h3 className="font-bold text-xl sm:text-2xl mt-2" style={{ fontFamily: "var(--font-display)" }}>{exp.company}</h3>
+          <p className="text-sm text-white/55 mt-1" style={{ fontFamily: "var(--font-body)" }}>{exp.role}</p>
         </div>
+        <button
+          onClick={() => setExpanded(!expanded)}
+          aria-expanded={expanded}
+          className="inline-flex items-center gap-1.5 text-xs text-white/45 hover:text-white transition-colors lg:mt-3 flex-shrink-0"
+          style={{ fontFamily: "var(--font-mono)" }}
+        >
+          {expanded ? "Hide" : "Show"} projects
+          <motion.span animate={{ rotate: expanded ? 180 : 0 }} className="flex"><ChevronDown size={14} /></motion.span>
+        </button>
+      </div>
 
-        <AnimatePresence>
-          {expanded && (
-            <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }} exit={{ opacity: 0, height: 0 }} transition={{ duration: 0.35, ease: [0.23, 1, 0.32, 1] }} className="overflow-hidden">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 mt-2">
+      {/* Projects */}
+      <div className="min-w-0">
+        <AnimatePresence initial={false}>
+          {expanded ? (
+            <motion.div key="open" initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }} exit={{ opacity: 0, height: 0 }} transition={{ duration: 0.4, ease: [0.23, 1, 0.32, 1] }} className="overflow-hidden">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
                 {exp.projects.map((proj) => (
-                  <div key={proj.name} className="p-4 sm:p-5 rounded-xl" style={{ background: `${exp.color}06`, border: `1px solid ${exp.color}15` }}>
-                    <h4 className="font-semibold text-sm mb-2" style={{ fontFamily: "'Syne', sans-serif", color: "rgba(255,255,255,0.85)" }}>{proj.name}</h4>
-                    <p className="text-xs text-white/45 leading-relaxed mb-3" style={{ fontFamily: "'DM Sans', sans-serif" }}>{proj.description}</p>
-                    <div className="flex flex-wrap gap-1 mb-3">
-                      {proj.tech.map((t) => (
-                        <span key={t} className="px-1.5 py-0.5 rounded text-[10px] font-mono" style={{ background: `${exp.color}10`, border: `1px solid ${exp.color}20`, color: exp.color, fontFamily: "'JetBrains Mono', monospace" }}>{t}</span>
-                      ))}
+                  <div key={proj.name} className="card p-5 sm:p-6 flex flex-col">
+                    <h4 className="font-semibold text-base mb-2 text-white/90" style={{ fontFamily: "var(--font-display)" }}>{proj.name}</h4>
+                    <p className="text-sm text-white/55 leading-relaxed mb-4" style={{ fontFamily: "var(--font-body)" }}>{proj.description}</p>
+                    <div className="flex flex-wrap gap-1.5 mb-5">
+                      {proj.tech.map((t) => <span key={t} className="chip">{t}</span>)}
                     </div>
-                    <p className="text-xs" style={{ color: exp.color, fontFamily: "'DM Sans', sans-serif" }}>✓ {proj.impact}</p>
+                    <div className="mt-auto flex items-center gap-2 pt-4 border-t text-sm font-medium" style={{ borderColor: "rgba(255,255,255,0.07)", color: exp.color, fontFamily: "var(--font-body)" }}>
+                      <TrendingUp size={15} className="flex-shrink-0" />
+                      {proj.impact}
+                    </div>
                   </div>
                 ))}
               </div>
             </motion.div>
+          ) : (
+            <motion.p key="closed" initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-sm text-white/45 lg:pt-7" style={{ fontFamily: "var(--font-mono)" }}>
+              {exp.projects.map((p) => p.name).join("  ·  ")}
+            </motion.p>
           )}
         </AnimatePresence>
-
-        {!expanded && (
-          <div className="flex flex-wrap gap-1 items-center">
-            {exp.projects.map((p) => (
-              <span key={p.name} className="text-xs text-white/30 font-mono" style={{ fontFamily: "'JetBrains Mono', monospace" }}>{p.name} · </span>
-            ))}
-            <button onClick={() => setExpanded(true)} className="text-xs font-mono hover:opacity-80 transition-opacity ml-1" style={{ color: exp.color, fontFamily: "'JetBrains Mono', monospace" }}>expand →</button>
-          </div>
-        )}
       </div>
     </motion.div>
   );
@@ -92,22 +92,20 @@ export default function Experience() {
   const inView = useInView(ref, { once: true });
   return (
     <section id="experience" ref={ref} className="relative py-20 sm:py-28 lg:py-32" style={{ background: "var(--bg-2)" }}>
-      <div className="noise-overlay" />
       <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-violet-500/20 to-transparent" />
-      <div className="max-w-6xl mx-auto px-5 sm:px-10 lg:px-16">
-        <motion.div initial={{ opacity: 0, y: 50, filter: "blur(6px)" }} animate={inView ? { opacity: 1, y: 0, filter: "blur(0px)" } : {}} transition={{ duration: 0.8, ease: [0.23, 1, 0.32, 1] }} className="mb-10 sm:mb-14">
+      <div className="relative z-10 max-w-6xl mx-auto px-5 sm:px-10 lg:px-16">
+        <motion.div initial={{ opacity: 0, y: 50 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.8, ease: [0.23, 1, 0.32, 1] }} className="mb-10 sm:mb-14">
           <div className="flex items-center gap-4 mb-4">
             <span className="section-label">03 / Experience</span>
             <div className="w-8 h-px bg-violet-500/40" />
           </div>
-          <h2 className="section-title" style={{ fontFamily: "'Syne', sans-serif" }}>Production <span className="gradient-text">Experience</span></h2>
-          <p className="text-sm sm:text-base text-white/40 mt-3 max-w-xl" style={{ fontFamily: "'DM Sans', sans-serif" }}>Building AI systems that run in production and solve real business problems.</p>
+          <h2 className="section-title" style={{ fontFamily: "var(--font-display)" }}>Production <span className="gradient-text">Experience</span></h2>
+          <p className="section-lead mt-4 max-w-xl">Building AI systems that run in production and solve real business problems.</p>
         </motion.div>
-        <div className="max-w-3xl">
+        <div className="border-b" style={{ borderColor: "rgba(255,255,255,0.08)" }}>
           {experiences.map((exp, i) => <ExperienceItem key={exp.id} exp={exp} index={i} />)}
         </div>
       </div>
     </section>
   );
 }
-

@@ -1,14 +1,70 @@
 "use client";
 import { useRef, useState, useEffect } from "react";
 import { motion, useInView } from "framer-motion";
+import { usePauseOffscreen } from "@/lib/usePauseOffscreen";
 
 const stats = [
   { value: 1, suffix: "+", label: "Years Experience" },
   { value: 10, suffix: "+", label: "AI Systems Built" },
-  { value: 300, suffix: "+", label: "Pages Processed" },
-  { value: 200, suffix: "+", label: "Calls Daily" },
   { value: 5, suffix: "+", label: "Deployments" },
 ];
+
+const profile: { key: string; value: string | string[] }[] = [
+  { key: "name", value: "Harsh Gupta" },
+  { key: "role", value: "AI & Backend Engineer" },
+  { key: "focus", value: ["Multi-agent systems", "Production RAG", "AI automation"] },
+  { key: "stack", value: ["LangGraph", "FastAPI", "Next.js"] },
+  { key: "status", value: "Available for projects" },
+];
+
+function ProfileCard() {
+  const str = (v: string) => <span className="text-emerald-300/90">&quot;{v}&quot;</span>;
+  return (
+    <div className="relative w-full max-w-md">
+      <div aria-hidden className="absolute -inset-24 pointer-events-none" style={{ background: "radial-gradient(closest-side, rgba(99,102,241,0.16), transparent)" }} />
+      <div className="relative card overflow-hidden" style={{ boxShadow: "0 30px 80px rgba(0,0,0,0.45)" }}>
+        {/* Window bar */}
+        <div className="flex items-center gap-2 px-4 py-3 border-b" style={{ borderColor: "var(--border)", background: "rgba(255,255,255,0.02)" }}>
+          <span className="w-2.5 h-2.5 rounded-full bg-white/15" />
+          <span className="w-2.5 h-2.5 rounded-full bg-white/15" />
+          <span className="w-2.5 h-2.5 rounded-full bg-white/15" />
+          <span className="ml-2 text-[11px] text-white/35" style={{ fontFamily: "var(--font-mono)" }}>engineer.ts</span>
+        </div>
+        {/* Code */}
+        <div className="px-5 py-5 text-[12.5px] sm:text-[13px] leading-[1.9] overflow-x-auto whitespace-pre" style={{ fontFamily: "var(--font-mono)" }}>
+          <div>
+            <span className="text-violet-300">const </span>
+            <span className="text-sky-300">engineer</span>
+            <span className="text-white/40">{" = {"}</span>
+          </div>
+          {profile.map((row) => (
+            <div key={row.key}>
+              <div>
+                <span className="text-indigo-200/90">{"  " + row.key}</span>
+                <span className="text-white/40">: </span>
+                {Array.isArray(row.value) ? <span className="text-white/40">[</span> : <>{str(row.value)}<span className="text-white/40">,</span></>}
+              </div>
+              {Array.isArray(row.value) && (
+                <>
+                  {row.value.map((v) => (
+                    <div key={v}>{"    "}{str(v)}<span className="text-white/40">,</span></div>
+                  ))}
+                  <div className="text-white/40">{"  ],"}</div>
+                </>
+              )}
+            </div>
+          ))}
+          <div className="text-white/40">{"};"}</div>
+        </div>
+        {/* Status bar */}
+        <div className="flex items-center justify-between px-5 py-3 border-t text-[11px]" style={{ borderColor: "var(--border)", fontFamily: "var(--font-mono)" }}>
+          <span className="flex items-center gap-2 text-emerald-300/80"><span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />online</span>
+          <span className="text-white/30">AI · Backend · Automation</span>
+        </div>
+      </div>
+    </div>
+  );
+}
 
 function Counter({ value, suffix }: { value: number; suffix: string }) {
   const [count, setCount] = useState(0);
@@ -34,66 +90,53 @@ function Counter({ value, suffix }: { value: number; suffix: string }) {
 }
 
 const containerVariants = { hidden: {}, visible: { transition: { staggerChildren: 0.08 } } };
-const itemVariants = { hidden: { opacity: 0, y: 50, filter: "blur(6px)" }, visible: { opacity: 1, y: 0, filter: "blur(0px)", transition: { duration: 0.85, ease: [0.23, 1, 0.32, 1] as [number, number, number, number] } } };
+const itemVariants = { hidden: { opacity: 0, y: 50 }, visible: { opacity: 1, y: 0, transition: { duration: 0.85, ease: [0.23, 1, 0.32, 1] as [number, number, number, number] } } };
 
 export default function About() {
-  const ref = useRef(null);
+  const ref = useRef<HTMLElement>(null);
   const inView = useInView(ref, { once: true, margin: "-10%" });
+  usePauseOffscreen(ref);
 
   return (
     <section id="about" ref={ref} className="relative py-20 sm:py-28 lg:py-32 overflow-hidden" style={{ background: "var(--bg-2)" }}>
-      <div className="noise-overlay" />
-      <motion.div className="absolute top-0 right-0 w-64 sm:w-96 h-64 sm:h-96 rounded-full blur-[100px] pointer-events-none" style={{ background: "rgba(139,92,246,0.06)" }} animate={{ x: [0, -30, 20, 0], y: [0, 40, -20, 0], scale: [1, 1.15, 0.9, 1] }} transition={{ duration: 14, repeat: Infinity, ease: "easeInOut" }} />
-      <motion.div className="absolute bottom-0 left-0 w-48 sm:w-72 h-48 sm:h-72 rounded-full blur-[120px] pointer-events-none" style={{ background: "rgba(99,102,241,0.04)" }} animate={{ x: [0, 40, -20, 0], y: [0, -30, 30, 0] }} transition={{ duration: 17, repeat: Infinity, ease: "easeInOut", delay: 3 }} />
+      <div aria-hidden className="glow-orb -top-40 -right-40 w-[520px] sm:w-[720px] h-[520px] sm:h-[720px] animate-drift-b" style={{ background: "radial-gradient(circle, rgba(139,92,246,0.10) 0%, transparent 70%)" }} />
+      <div aria-hidden className="glow-orb -bottom-40 -left-40 w-[420px] sm:w-[600px] h-[420px] sm:h-[600px] animate-drift-a" style={{ background: "radial-gradient(circle, rgba(99,102,241,0.07) 0%, transparent 70%)" }} />
 
       <motion.div variants={containerVariants} initial="hidden" animate={inView ? "visible" : "hidden"} className="max-w-6xl mx-auto px-5 sm:px-10 lg:px-16">
-        <motion.div variants={itemVariants} className="flex items-center gap-4 mb-4">
+        <motion.div variants={itemVariants} className="flex items-center gap-4 mb-8 sm:mb-10">
           <span className="section-label">01 / About</span>
           <div className="w-10 h-px bg-indigo-500/40" />
         </motion.div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
-          {/* Left — Image placeholder */}
-          <motion.div variants={itemVariants} className="flex justify-center lg:justify-start">
-            <div className="relative w-full max-w-[280px] sm:max-w-sm">
-              <div className="relative rounded-2xl overflow-hidden glass-bright p-1" style={{ aspectRatio: "4/5" }}>
-                <div className="w-full h-full rounded-xl" style={{ background: "linear-gradient(135deg, rgba(99,102,241,0.15) 0%, rgba(139,92,246,0.1) 50%, rgba(14,165,233,0.05) 100%)" }}>
-                  <div className="w-full h-full flex items-center justify-center">
-                    <div className="text-center">
-                      <div className="font-display font-extrabold gradient-text" style={{ fontFamily: "'Syne', sans-serif", fontSize: "clamp(3rem, 10vw, 6rem)" }}>HG</div>
-                      <p className="text-xs font-mono text-white/30 mt-2 tracking-widest" style={{ fontFamily: "'JetBrains Mono', monospace" }}>AI & Backend Engineer</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className="absolute -top-3 -right-3 w-16 sm:w-20 h-16 sm:h-20 rounded-2xl glass border border-indigo-500/20 flex items-center justify-center animate-float text-xl sm:text-2xl">🤖</div>
-              <div className="absolute -bottom-3 -left-3 w-14 sm:w-18 h-14 sm:h-18 rounded-xl glass border border-violet-500/20 flex items-center justify-center animate-float-slow text-lg sm:text-xl">⚡</div>
-            </div>
+          {/* Left — Profile card */}
+          <motion.div variants={itemVariants} className="flex justify-center lg:justify-start order-2 lg:order-1">
+            <ProfileCard />
           </motion.div>
 
           {/* Right — Content */}
-          <div className="space-y-6 sm:space-y-8">
+          <div className="space-y-6 sm:space-y-8 order-1 lg:order-2">
             <motion.div variants={itemVariants}>
-              <h2 className="section-title mb-4 sm:mb-6" style={{ fontFamily: "'Syne', sans-serif" }}>
+              <h2 className="section-title mb-4 sm:mb-6" style={{ fontFamily: "var(--font-display)", fontSize: "clamp(1.75rem, 3vw, 2.5rem)" }}>
                 Turning Business Logic into{" "}
                 <span className="gradient-text">Intelligent Systems</span>
               </h2>
-              <p className="text-sm sm:text-base text-white/55 leading-relaxed" style={{ fontFamily: "'DM Sans', sans-serif" }}>
+              <p className="section-lead">
                 AI Backend Engineer with 1+ years of experience building production RAG systems,
                 multi-agent workflows, AI automation platforms, and scalable backend architectures.
               </p>
-              <p className="text-sm sm:text-base text-white/55 leading-relaxed mt-3" style={{ fontFamily: "'DM Sans', sans-serif" }}>
+              <p className="section-lead mt-3">
                 I specialize in turning complex business processes into intelligent autonomous systems.
               </p>
             </motion.div>
 
-            <motion.div variants={containerVariants} className="grid grid-cols-2 gap-3">
+            <motion.div variants={containerVariants} className="grid grid-cols-3 gap-3">
               {stats.map((stat) => (
-                <motion.div key={stat.label} variants={itemVariants} whileHover={{ scale: 1.04, y: -3 }} transition={{ type: "spring", stiffness: 400, damping: 20 }} className="p-3 sm:p-4 rounded-xl glass hover-lift overflow-hidden cursor-default">
-                  <div className="font-display font-extrabold leading-none gradient-text" style={{ fontFamily: "'Syne', sans-serif", fontSize: "clamp(1.5rem, 2vw, 1.9rem)" }}>
+                <motion.div key={stat.label} variants={itemVariants} whileHover={{ scale: 1.04, y: -3 }} transition={{ type: "spring", stiffness: 400, damping: 20 }} className="card p-4 sm:p-5 overflow-hidden cursor-default">
+                  <div className="font-display font-extrabold leading-none gradient-text" style={{ fontFamily: "var(--font-display)", fontSize: "clamp(1.6rem, 2.4vw, 2.2rem)" }}>
                     <Counter value={stat.value} suffix={stat.suffix} />
                   </div>
-                  <p className="text-xs text-white/40 mt-1 leading-tight" style={{ fontFamily: "'DM Sans', sans-serif" }}>{stat.label}</p>
+                  <p className="text-xs text-white/50 mt-2 leading-tight" style={{ fontFamily: "var(--font-body)" }}>{stat.label}</p>
                 </motion.div>
               ))}
             </motion.div>

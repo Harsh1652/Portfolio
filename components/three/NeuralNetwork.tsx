@@ -1,5 +1,5 @@
 "use client";
-import { useRef, useMemo, useEffect } from "react";
+import { useRef, useMemo, useEffect, useState } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import * as THREE from "three";
 
@@ -28,17 +28,23 @@ function Nodes({ mousePos }: { mousePos: React.MutableRefObject<{ x: number; y: 
   const geometry = useMemo(() => new THREE.SphereGeometry(0.04, 8, 8), []);
   const material = useMemo(() => new THREE.MeshBasicMaterial({ color: "#818cf8" }), []);
 
-  const lineGeometry = useMemo(() => new THREE.BufferGeometry(), []);
+  // Line buffer is allocated once (worst case: every pair connected) and refilled in place each frame
+  const maxSegments = (nodes.length * (nodes.length - 1)) / 2;
+  const linePositions = useMemo(() => new Float32Array(maxSegments * 6), [maxSegments]);
+  const lineGeometry = useMemo(() => {
+    const g = new THREE.BufferGeometry();
+    g.setAttribute("position", new THREE.BufferAttribute(linePositions, 3).setUsage(THREE.DynamicDrawUsage));
+    g.setDrawRange(0, 0);
+    return g;
+  }, [linePositions]);
 
   const dummy = useMemo(() => new THREE.Object3D(), []);
+  const mouseInfluence = useMemo(() => new THREE.Vector3(), []);
+  const repel = useMemo(() => new THREE.Vector3(), []);
 
   useFrame((state) => {
     const t = state.clock.getElapsedTime();
-    const mouseInfluence = new THREE.Vector3(
-      mousePos.current.x * viewport.width * 0.3,
-      mousePos.current.y * viewport.height * 0.3,
-      0
-    );
+    mouseInfluence.set(mousePos.current.x * viewport.width * 0.3, mousePos.current.y * viewport.height * 0.3, 0);
 
     nodes.forEach((node, i) => {
       node.position.add(node.velocity);
@@ -49,7 +55,7 @@ function Nodes({ mousePos }: { mousePos: React.MutableRefObject<{ x: number; y: 
 
       const dist = node.position.distanceTo(mouseInfluence);
       if (dist < 1.5) {
-        const repel = node.position.clone().sub(mouseInfluence).normalize().multiplyScalar(0.002);
+        repel.copy(node.position).sub(mouseInfluence).normalize().multiplyScalar(0.002);
         node.velocity.add(repel);
       }
 
@@ -59,21 +65,20 @@ function Nodes({ mousePos }: { mousePos: React.MutableRefObject<{ x: number; y: 
     });
     if (meshRef.current) meshRef.current.instanceMatrix.needsUpdate = true;
 
-    const positions: number[] = [];
-    const threshold = 1.8;
+    const thresholdSq = 1.8 * 1.8;
+    let n = 0;
     for (let i = 0; i < nodes.length; i++) {
+      const a = nodes[i].position;
       for (let j = i + 1; j < nodes.length; j++) {
-        const dist = nodes[i].position.distanceTo(nodes[j].position);
-        if (dist < threshold) {
-          positions.push(
-            nodes[i].position.x, nodes[i].position.y, nodes[i].position.z,
-            nodes[j].position.x, nodes[j].position.y, nodes[j].position.z
-          );
+        const b = nodes[j].position;
+        if (a.distanceToSquared(b) < thresholdSq) {
+          linePositions[n++] = a.x; linePositions[n++] = a.y; linePositions[n++] = a.z;
+          linePositions[n++] = b.x; linePositions[n++] = b.y; linePositions[n++] = b.z;
         }
       }
     }
-
-    lineGeometry.setAttribute("position", new THREE.Float32BufferAttribute(positions, 3));
+    lineGeometry.setDrawRange(0, n / 3);
+    lineGeometry.attributes.position.needsUpdate = true;
 
     if (linesRef.current?.material instanceof THREE.LineBasicMaterial) {
       linesRef.current.material.opacity = 0.15 + Math.sin(t * 0.5) * 0.05;
@@ -85,7 +90,7 @@ function Nodes({ mousePos }: { mousePos: React.MutableRefObject<{ x: number; y: 
       <instancedMesh ref={meshRef} args={[geometry, material, nodes.length]}>
         <meshBasicMaterial color="#818cf8" />
       </instancedMesh>
-      <lineSegments ref={linesRef} geometry={lineGeometry}>
+      <lineSegments ref={linesRef} geometry={lineGeometry} frustumCulled={false}>
         <lineBasicMaterial color="#818cf8" transparent opacity={0.15} />
       </lineSegments>
     </group>
@@ -146,6 +151,20 @@ function FloatingRings() {
 
 export default function NeuralNetwork() {
   const mousePos = useRef({ x: 0, y: 0 });
+  const wrapRef = useRef<HTMLDivElement>(null);
+  const [running, setRunning] = useState(true);
+
+  // Only render while the scene is on screen and the tab is visible
+  useEffect(() => {
+    const el = wrapRef.current;
+    if (!el) return;
+    let onScreen = true;
+    const update = () => setRunning(onScreen && !document.hidden);
+    const io = new IntersectionObserver(([entry]) => { onScreen = entry.isIntersecting; update(); });
+    io.observe(el);
+    document.addEventListener("visibilitychange", update);
+    return () => { io.disconnect(); document.removeEventListener("visibilitychange", update); };
+  }, []);
 
   useEffect(() => {
     const onMove = (e: MouseEvent) => {
@@ -157,10 +176,13 @@ export default function NeuralNetwork() {
   }, []);
 
   return (
+    <div ref={wrapRef} className="w-full h-full">
     <Canvas
       camera={{ position: [0, 0, 5], fov: 60 }}
       style={{ background: "transparent" }}
       dpr={[1, 1.5]}
+      frameloop={running ? "always" : "never"}
+      gl={{ antialias: true, powerPreference: "high-performance" }}
     >
       <ambientLight intensity={0.5} />
       <pointLight position={[3, 3, 3]} intensity={2} color="#818cf8" />
@@ -169,5 +191,6 @@ export default function NeuralNetwork() {
       <CentralOrb mousePos={mousePos} />
       <FloatingRings />
     </Canvas>
+    </div>
   );
 }

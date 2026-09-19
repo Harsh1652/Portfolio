@@ -49,17 +49,17 @@ function ProjectCard({ project, index, onOpen }: { project: typeof projects[0]; 
       <div className={isEven ? "order-1" : "order-1 lg:order-2"}>
         <div className="space-y-4 sm:space-y-5">
           <div className="flex items-center gap-3">
-            <span className="font-mono text-xs tracking-widest" style={{ fontFamily: "'JetBrains Mono', monospace", color: project.color }}>{project.tag} / Project</span>
+            <span className="font-mono text-xs tracking-widest" style={{ fontFamily: "var(--font-mono)", color: project.color }}>{project.tag} / Project</span>
             <div className="w-8 h-px" style={{ background: project.color, opacity: 0.4 }} />
           </div>
 
           <div>
             <div className="flex items-center gap-2 sm:gap-3 mb-1 flex-wrap">
               <span className="text-xl sm:text-2xl">{project.icon}</span>
-              <h3 className="font-display font-bold" style={{ fontFamily: "'Syne', sans-serif", fontSize: "clamp(1.25rem, 3vw, 2rem)" }}>{project.title}</h3>
+              <h3 className="font-display font-bold" style={{ fontFamily: "var(--font-display)", fontSize: "clamp(1.25rem, 3vw, 2rem)" }}>{project.title}</h3>
             </div>
-            <p className="text-xs font-mono text-white/40 mb-3" style={{ fontFamily: "'JetBrains Mono', monospace" }}>{project.subtitle}</p>
-            <p className="text-sm sm:text-base text-white/55 leading-relaxed" style={{ fontFamily: "'DM Sans', sans-serif" }}>{project.description}</p>
+            <p className="text-xs font-mono text-white/40 mb-3" style={{ fontFamily: "var(--font-mono)" }}>{project.subtitle}</p>
+            <p className="text-sm sm:text-base text-white/55 leading-relaxed" style={{ fontFamily: "var(--font-body)" }}>{project.description}</p>
           </div>
 
           <div className="flex flex-wrap gap-1.5">
@@ -71,18 +71,18 @@ function ProjectCard({ project, index, onOpen }: { project: typeof projects[0]; 
           <div className="grid grid-cols-2 gap-2 sm:gap-3">
             {project.metrics.map((m) => (
               <div key={m.label} className="p-2.5 sm:p-3 rounded-lg" style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.06)" }}>
-                <div className="font-display font-bold text-base sm:text-lg" style={{ fontFamily: "'Syne', sans-serif", color: project.color }}>{m.value}</div>
-                <div className="text-xs text-white/40 mt-0.5 leading-tight" style={{ fontFamily: "'DM Sans', sans-serif" }}>{m.label}</div>
+                <div className="font-display font-bold text-base sm:text-lg" style={{ fontFamily: "var(--font-display)", color: project.color }}>{m.value}</div>
+                <div className="text-xs text-white/40 mt-0.5 leading-tight" style={{ fontFamily: "var(--font-body)" }}>{m.label}</div>
               </div>
             ))}
           </div>
 
           <div className="flex flex-wrap gap-2 sm:gap-3">
-            <button onClick={() => onOpen(project.id)} className="px-4 py-2 rounded-xl text-sm font-semibold" style={{ background: `${project.color}18`, border: `1px solid ${project.color}35`, color: project.color, fontFamily: "'DM Sans', sans-serif" }}>
+            <button onClick={() => onOpen(project.id)} className="px-4 py-2 rounded-xl text-sm font-semibold" style={{ background: `${project.color}18`, border: `1px solid ${project.color}35`, color: project.color, fontFamily: "var(--font-body)" }}>
               Architecture →
             </button>
-            <a href={project.github} className="px-4 py-2 rounded-xl text-sm font-semibold glass-bright" style={{ fontFamily: "'DM Sans', sans-serif", color: "rgba(255,255,255,0.6)" }}>GitHub</a>
-            <a href={project.demo} className="px-4 py-2 rounded-xl text-sm font-semibold" style={{ fontFamily: "'DM Sans', sans-serif", color: "rgba(255,255,255,0.4)", border: "1px solid rgba(255,255,255,0.08)" }}>Live Demo</a>
+            <a href={project.github} className="px-4 py-2 rounded-xl text-sm font-semibold glass-bright" style={{ fontFamily: "var(--font-body)", color: "rgba(255,255,255,0.6)" }}>GitHub</a>
+            <a href={project.demo} className="px-4 py-2 rounded-xl text-sm font-semibold" style={{ fontFamily: "var(--font-body)", color: "rgba(255,255,255,0.4)", border: "1px solid rgba(255,255,255,0.08)" }}>Live Demo</a>
           </div>
         </div>
       </div>
@@ -102,7 +102,7 @@ function ProjectCard({ project, index, onOpen }: { project: typeof projects[0]; 
                 const y = 50 + radius * Math.sin(angle);
                 return (
                   <div key={tech} className="absolute" style={{ left: `${x}%`, top: `${y}%`, transform: "translate(-50%,-50%)" }}>
-                    <div className="px-1.5 sm:px-2 py-0.5 sm:py-1 rounded-lg text-[10px] sm:text-xs font-mono animate-float whitespace-nowrap" style={{ animationDelay: `${i * 0.5}s`, background: `${project.color}10`, border: `1px solid ${project.color}20`, color: project.color, fontFamily: "'JetBrains Mono', monospace" }}>{tech}</div>
+                    <div className="px-1.5 sm:px-2 py-0.5 sm:py-1 rounded-lg text-[10px] sm:text-xs font-mono animate-float whitespace-nowrap" style={{ animationDelay: `${i * 0.5}s`, background: `${project.color}10`, border: `1px solid ${project.color}20`, color: project.color, fontFamily: "var(--font-mono)" }}>{tech}</div>
                   </div>
                 );
               })}
@@ -135,24 +135,24 @@ function ProjectModal({ id, onClose }: { id: number; onClose: () => void }) {
           <div className="flex items-center gap-3 pr-8">
             <span className="text-2xl sm:text-3xl">{project.icon}</span>
             <div>
-              <h3 className="font-display font-bold text-lg sm:text-2xl" style={{ fontFamily: "'Syne', sans-serif" }}>{project.title}</h3>
-              <p className="text-xs text-white/40 font-mono" style={{ fontFamily: "'JetBrains Mono', monospace" }}>{project.subtitle}</p>
+              <h3 className="font-display font-bold text-lg sm:text-2xl" style={{ fontFamily: "var(--font-display)" }}>{project.title}</h3>
+              <p className="text-xs text-white/40 font-mono" style={{ fontFamily: "var(--font-mono)" }}>{project.subtitle}</p>
             </div>
           </div>
-          <p className="text-sm sm:text-base text-white/60 leading-relaxed" style={{ fontFamily: "'DM Sans', sans-serif" }}>{project.description}</p>
+          <p className="text-sm sm:text-base text-white/60 leading-relaxed" style={{ fontFamily: "var(--font-body)" }}>{project.description}</p>
           <div className="rounded-xl p-4 sm:p-5" style={{ background: "rgba(0,0,0,0.4)", border: "1px solid rgba(255,255,255,0.06)" }}>
-            <p className="text-xs font-mono text-white/30 mb-3" style={{ fontFamily: "'JetBrains Mono', monospace" }}>// System Architecture</p>
+            <p className="text-xs font-mono text-white/30 mb-3" style={{ fontFamily: "var(--font-mono)" }}>// System Architecture</p>
             <div className="flex flex-wrap gap-2 items-center">
               {["Input","→","API Gateway","→","Orchestrator","→","AI Agents","→","Memory","→","Output"].map((item,i) => (
-                <span key={i} className={item === "→" ? "text-white/20 text-sm" : "px-2 py-1 rounded text-xs font-mono"} style={item !== "→" ? { background: `${project.color}10`, border: `1px solid ${project.color}20`, color: project.color, fontFamily: "'JetBrains Mono', monospace" } : { fontFamily: "'JetBrains Mono', monospace" }}>{item}</span>
+                <span key={i} className={item === "→" ? "text-white/20 text-sm" : "px-2 py-1 rounded text-xs font-mono"} style={item !== "→" ? { background: `${project.color}10`, border: `1px solid ${project.color}20`, color: project.color, fontFamily: "var(--font-mono)" } : { fontFamily: "var(--font-mono)" }}>{item}</span>
               ))}
             </div>
           </div>
           <div className="grid grid-cols-2 gap-3">
             {project.metrics.map((m) => (
               <div key={m.label} className="p-3 sm:p-4 rounded-xl" style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.06)" }}>
-                <div className="font-display font-bold text-lg sm:text-xl" style={{ fontFamily: "'Syne', sans-serif", color: project.color }}>{m.value}</div>
-                <div className="text-xs sm:text-sm text-white/40" style={{ fontFamily: "'DM Sans', sans-serif" }}>{m.label}</div>
+                <div className="font-display font-bold text-lg sm:text-xl" style={{ fontFamily: "var(--font-display)", color: project.color }}>{m.value}</div>
+                <div className="text-xs sm:text-sm text-white/40" style={{ fontFamily: "var(--font-body)" }}>{m.label}</div>
               </div>
             ))}
           </div>
@@ -160,8 +160,8 @@ function ProjectModal({ id, onClose }: { id: number; onClose: () => void }) {
             {project.tech.map((t) => (<span key={t} className="tech-chip" style={{ background: `${project.color}15`, borderColor: `${project.color}25`, color: project.color }}>{t}</span>))}
           </div>
           <div className="flex gap-3">
-            <a href={project.github} className="flex-1 text-center py-3 rounded-xl glass-bright text-sm font-semibold text-white/70" style={{ fontFamily: "'DM Sans', sans-serif" }}>GitHub</a>
-            <a href={project.demo} className="flex-1 text-center py-3 rounded-xl text-sm font-semibold" style={{ background: `${project.color}18`, border: `1px solid ${project.color}35`, color: project.color, fontFamily: "'DM Sans', sans-serif" }}>Live Demo</a>
+            <a href={project.github} className="flex-1 text-center py-3 rounded-xl glass-bright text-sm font-semibold text-white/70" style={{ fontFamily: "var(--font-body)" }}>GitHub</a>
+            <a href={project.demo} className="flex-1 text-center py-3 rounded-xl text-sm font-semibold" style={{ background: `${project.color}18`, border: `1px solid ${project.color}35`, color: project.color, fontFamily: "var(--font-body)" }}>Live Demo</a>
           </div>
         </div>
       </motion.div>
@@ -184,8 +184,8 @@ export default function Projects() {
             <span className="section-label">02 / Featured Work</span>
             <div className="w-8 h-px bg-indigo-500/40" />
           </div>
-          <h2 className="section-title" style={{ fontFamily: "'Syne', sans-serif" }}>Featured <span className="gradient-text">AI Systems</span></h2>
-          <p className="text-sm sm:text-base text-white/40 mt-3 max-w-xl" style={{ fontFamily: "'DM Sans', sans-serif" }}>Production deployments that solve real business problems at scale.</p>
+          <h2 className="section-title" style={{ fontFamily: "var(--font-display)" }}>Featured <span className="gradient-text">AI Systems</span></h2>
+          <p className="text-sm sm:text-base text-white/40 mt-3 max-w-xl" style={{ fontFamily: "var(--font-body)" }}>Production deployments that solve real business problems at scale.</p>
         </motion.div>
         <div className="divide-y divide-white/5">
           {projects.map((project, i) => <ProjectCard key={project.id} project={project} index={i} onOpen={setOpenProject} />)}

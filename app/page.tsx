@@ -1,44 +1,23 @@
-"use client";
-import { useState } from "react";
-import dynamic from "next/dynamic";
-import LoadingScreen from "@/components/ui/LoadingScreen";
-import Navbar from "@/components/layout/Navbar";
-import Hero from "@/components/sections/Hero";
-import About from "@/components/sections/About";
-import Work from "@/components/sections/Work";
-import Experience from "@/components/sections/Experience";
-import TechStack from "@/components/sections/TechStack";
-import Metrics from "@/components/sections/Metrics";
-import Contact from "@/components/sections/Contact";
-import Footer from "@/components/layout/Footer";
-import ScrollProgress from "@/components/ui/ScrollProgress";
+import HomeClient from "@/components/home/HomeClient";
+import { SITE_URL, site, absoluteUrl } from "@/lib/site";
 
-const CustomCursor = dynamic(() => import("@/components/ui/CustomCursor"), { ssr: false });
-const SmoothScroll = dynamic(() => import("@/components/providers/SmoothScroll"), { ssr: false });
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "ProfilePage",
+  "@id": absoluteUrl("/#profile"),
+  url: SITE_URL,
+  name: site.title,
+  description: site.description,
+  isPartOf: { "@id": absoluteUrl("/#website") },
+  about: { "@id": absoluteUrl("/#person") },
+  mainEntity: { "@id": absoluteUrl("/#person") },
+};
 
 export default function HomePage() {
-  const [loaded, setLoaded] = useState(false);
-
   return (
     <>
-      <CustomCursor />
-      <ScrollProgress />
-      <LoadingScreen onComplete={() => setLoaded(true)} />
-      {loaded && (
-        <SmoothScroll>
-          <Navbar />
-          <main>
-            <Hero />
-            <About />
-            <Work />
-            <Experience />
-            <TechStack />
-            <Metrics />
-            <Contact />
-          </main>
-          <Footer />
-        </SmoothScroll>
-      )}
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <HomeClient />
     </>
   );
 }

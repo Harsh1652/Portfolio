@@ -1,10 +1,6 @@
 "use client";
 import { useEffect, useRef, createContext, useContext } from "react";
 import Lenis from "@studio-freight/lenis";
-import gsap from "gsap";
-import ScrollTrigger from "gsap/ScrollTrigger";
-
-gsap.registerPlugin(ScrollTrigger);
 
 const LenisContext = createContext<{ stop: () => void; start: () => void }>({
   stop: () => {},
@@ -15,28 +11,33 @@ export function useLenis() {
   return useContext(LenisContext);
 }
 
-export default function SmoothScroll({ children }: { children: React.ReactNode }) {
+export default function SmoothScroll({ children, paused = false }: { children: React.ReactNode; paused?: boolean }) {
   const lenisRef = useRef<Lenis | null>(null);
+  const pausedRef = useRef(paused);
 
   useEffect(() => {
-    const lenis = new Lenis({
-      duration: 1.2,
-      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-      smoothWheel: true,
-    });
+    // lerp-based smoothing tracks the wheel closely; the old 1.2s eased duration made scrolling feel delayed
+    const lenis = new Lenis({ lerp: 0.14, smoothWheel: true, wheelMultiplier: 1 });
     lenisRef.current = lenis;
+    if (pausedRef.current) lenis.stop();
 
-    lenis.on("scroll", ScrollTrigger.update);
-
-    const tick = (time: number) => lenis.raf(time * 1000);
-    gsap.ticker.add(tick);
-    gsap.ticker.lagSmoothing(0);
+    let frame = requestAnimationFrame(function tick(time) {
+      lenis.raf(time);
+      frame = requestAnimationFrame(tick);
+    });
 
     return () => {
+      cancelAnimationFrame(frame);
       lenis.destroy();
-      gsap.ticker.remove(tick);
     };
   }, []);
+
+  // Hold scrolling while an overlay (e.g. the loading screen) covers the page
+  useEffect(() => {
+    pausedRef.current = paused;
+    if (paused) lenisRef.current?.stop();
+    else lenisRef.current?.start();
+  }, [paused]);
 
   const ctx = {
     stop: () => lenisRef.current?.stop(),

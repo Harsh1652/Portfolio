@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useRef, useState, useMemo } from "react";
+import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 // Deterministic pseudo-random based on seed — avoids hydration mismatch
@@ -20,9 +20,21 @@ export default function LoadingScreen({ onComplete }: Props) {
   const text1 = "Building Intelligent Systems...";
   const text2 = "Loading Experience...";
 
+  const [skipped, setSkipped] = useState(false);
+
   useEffect(() => {
-    const t1 = setTimeout(() => setPhase("typing1"), 800);
+    // Returning within the same session (e.g. back from /youtube): don't replay the intro
+    let seen = false;
+    try { seen = sessionStorage.getItem("intro-seen") === "1"; sessionStorage.setItem("intro-seen", "1"); } catch {}
+    if (seen) {
+      setSkipped(true);
+      setPhase("done");
+      onComplete();
+      return;
+    }
+    const t1 = setTimeout(() => setPhase("typing1"), 400);
     return () => clearTimeout(t1);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -33,9 +45,9 @@ export default function LoadingScreen({ onComplete }: Props) {
       i++;
       if (i >= text1.length) {
         clearInterval(interval);
-        setTimeout(() => setPhase("typing2"), 400);
+        setTimeout(() => setPhase("typing2"), 150);
       }
-    }, 45);
+    }, 22);
     return () => clearInterval(interval);
   }, [phase]);
 
@@ -47,9 +59,9 @@ export default function LoadingScreen({ onComplete }: Props) {
       i++;
       if (i >= text2.length) {
         clearInterval(interval);
-        setTimeout(() => setPhase("progress"), 300);
+        setTimeout(() => setPhase("progress"), 120);
       }
-    }, 50);
+    }, 22);
     return () => clearInterval(interval);
   }, [phase]);
 
@@ -57,15 +69,15 @@ export default function LoadingScreen({ onComplete }: Props) {
     if (phase !== "progress") return;
     let p = 0;
     const interval = setInterval(() => {
-      p += Math.random() * 8 + 2;
+      p += Math.random() * 14 + 8;
       if (p >= 100) {
         p = 100;
         setProgress(100);
         clearInterval(interval);
         setTimeout(() => {
           setPhase("done");
-          setTimeout(onComplete, 800);
-        }, 400);
+          setTimeout(onComplete, 450);
+        }, 200);
         return;
       }
       setProgress(Math.floor(p));
@@ -79,17 +91,17 @@ export default function LoadingScreen({ onComplete }: Props) {
         <motion.div
           className="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-[#030303]"
           exit={{ opacity: 0 }}
-          transition={{ duration: 0.8, ease: "easeInOut" }}
+          transition={{ duration: skipped ? 0.15 : 0.5, ease: "easeInOut" }}
         >
           {/* Particles */}
           <div className="absolute inset-0 overflow-hidden pointer-events-none">
-            {Array.from({ length: 30 }).map((_, i) => (
+            {Array.from({ length: 16 }).map((_, i) => (
               <motion.div
                 key={i}
                 className="absolute w-0.5 h-0.5 rounded-full bg-indigo-400/30"
                 style={{
-                  left: `${seededRandom(i * 3) * 100}%`,
-                  top: `${seededRandom(i * 3 + 1) * 100}%`,
+                  left: `${(seededRandom(i * 3) * 100).toFixed(2)}%`,
+                  top: `${(seededRandom(i * 3 + 1) * 100).toFixed(2)}%`,
                 }}
                 animate={{
                   y: [0, -80, 0],
@@ -113,11 +125,11 @@ export default function LoadingScreen({ onComplete }: Props) {
             className="relative mb-16"
           >
             <div className="w-20 h-20 rounded-2xl glass-bright flex items-center justify-center glow-ring">
-              <span className="font-display font-bold text-3xl gradient-text" style={{ fontFamily: "'Syne', sans-serif" }}>
+              <span className="font-display font-bold text-3xl gradient-text" style={{ fontFamily: "var(--font-display)" }}>
                 HG
               </span>
             </div>
-            <div className="absolute inset-0 rounded-2xl bg-indigo-500/10 blur-xl animate-pulse-glow" />
+            <div className="absolute -inset-6 rounded-full animate-pulse-glow" style={{ background: "radial-gradient(circle, rgba(99,102,241,0.22), transparent 70%)" }} />
           </motion.div>
 
           {/* Typing lines */}
@@ -127,7 +139,7 @@ export default function LoadingScreen({ onComplete }: Props) {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 className="font-mono text-sm text-indigo-300/80 tracking-widest"
-                style={{ fontFamily: "'JetBrains Mono', monospace" }}
+                style={{ fontFamily: "var(--font-mono)" }}
               >
                 {typed1}
                 {phase === "typing1" && <span className="animate-blink ml-0.5 text-indigo-400">|</span>}
@@ -138,7 +150,7 @@ export default function LoadingScreen({ onComplete }: Props) {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 className="font-mono text-sm text-white/40 tracking-widest"
-                style={{ fontFamily: "'JetBrains Mono', monospace" }}
+                style={{ fontFamily: "var(--font-mono)" }}
               >
                 {typed2}
                 {phase === "typing2" && <span className="animate-blink ml-0.5 text-white/60">|</span>}
@@ -155,10 +167,10 @@ export default function LoadingScreen({ onComplete }: Props) {
                 className="mt-12 w-64"
               >
                 <div className="flex justify-between mb-2">
-                  <span className="font-mono text-xs text-white/30" style={{ fontFamily: "'JetBrains Mono', monospace" }}>
+                  <span className="font-mono text-xs text-white/30" style={{ fontFamily: "var(--font-mono)" }}>
                     Initializing
                   </span>
-                  <span className="font-mono text-xs text-indigo-400" style={{ fontFamily: "'JetBrains Mono', monospace" }}>
+                  <span className="font-mono text-xs text-indigo-400" style={{ fontFamily: "var(--font-mono)" }}>
                     {progress}%
                   </span>
                 </div>

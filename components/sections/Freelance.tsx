@@ -53,9 +53,9 @@ function BrowserMockup({ site, index }: { site: typeof sites[0]; index: number }
           {/* URL bar */}
           <div className="flex-1 mx-1 sm:mx-2 px-2 sm:px-3 py-1 sm:py-1.5 rounded-lg flex items-center gap-1.5 min-w-0" style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.06)" }}>
             <span className="text-emerald-400/60 text-xs flex-shrink-0">🔒</span>
-            <span className="text-xs text-white/25 font-mono truncate" style={{ fontFamily: "'JetBrains Mono', monospace" }}>{site.url}</span>
+            <span className="text-xs text-white/25 font-mono truncate" style={{ fontFamily: "var(--font-mono)" }}>{site.url}</span>
           </div>
-          <a href={site.url} target="_blank" rel="noopener noreferrer" className="flex-shrink-0 text-xs font-mono px-2 py-1 rounded" style={{ background: `${site.color}15`, color: site.color, border: `1px solid ${site.color}25`, fontFamily: "'JetBrains Mono', monospace", whiteSpace: "nowrap" }}>
+          <a href={site.url} target="_blank" rel="noopener noreferrer" className="flex-shrink-0 text-xs font-mono px-2 py-1 rounded" style={{ background: `${site.color}15`, color: site.color, border: `1px solid ${site.color}25`, fontFamily: "var(--font-mono)", whiteSpace: "nowrap" }}>
             Visit →
           </a>
         </div>
@@ -73,9 +73,9 @@ function BrowserMockup({ site, index }: { site: typeof sites[0]; index: number }
             </div>
             {/* Hero content */}
             <div className="flex-1 flex flex-col items-center justify-center px-4 sm:px-12 text-center gap-2 sm:gap-4">
-              <div className="font-display font-bold text-sm sm:text-xl" style={{ fontFamily: "'Syne', sans-serif", color: "rgba(255,255,255,0.85)" }}>{site.preview.title}</div>
-              <div className="text-xs text-white/35 max-w-[200px] sm:max-w-xs hidden sm:block" style={{ fontFamily: "'DM Sans', sans-serif" }}>{site.preview.tagline}</div>
-              <div className="px-3 py-1 rounded-lg text-xs font-semibold" style={{ background: `${site.color}22`, color: site.color, fontFamily: "'DM Sans', sans-serif" }}>Explore →</div>
+              <div className="font-display font-bold text-sm sm:text-xl" style={{ fontFamily: "var(--font-display)", color: "rgba(255,255,255,0.85)" }}>{site.preview.title}</div>
+              <div className="text-xs text-white/35 max-w-[200px] sm:max-w-xs hidden sm:block" style={{ fontFamily: "var(--font-body)" }}>{site.preview.tagline}</div>
+              <div className="px-3 py-1 rounded-lg text-xs font-semibold" style={{ background: `${site.color}22`, color: site.color, fontFamily: "var(--font-body)" }}>Explore →</div>
             </div>
           </div>
         </div>
@@ -84,15 +84,15 @@ function BrowserMockup({ site, index }: { site: typeof sites[0]; index: number }
       {/* Info */}
       <div className="mt-4 sm:mt-6 space-y-3">
         <div>
-          <h3 className="font-display font-bold text-base sm:text-lg" style={{ fontFamily: "'Syne', sans-serif" }}>{site.name}</h3>
-          <p className="text-xs sm:text-sm text-white/45 mt-1 leading-relaxed" style={{ fontFamily: "'DM Sans', sans-serif" }}>{site.description}</p>
+          <h3 className="font-display font-bold text-base sm:text-lg" style={{ fontFamily: "var(--font-display)" }}>{site.name}</h3>
+          <p className="text-xs sm:text-sm text-white/45 mt-1 leading-relaxed" style={{ fontFamily: "var(--font-body)" }}>{site.description}</p>
         </div>
         <div className="flex flex-wrap gap-1.5">
           {site.tech.map((t) => <span key={t} className="tech-chip" style={{ background: `${site.color}10`, borderColor: `${site.color}20`, color: site.color }}>{t}</span>)}
         </div>
         <div className="flex flex-wrap gap-2">
           {site.metrics.map((m) => (
-            <span key={m} className="px-2 py-1 rounded text-xs text-white/30" style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.06)", fontFamily: "'DM Sans', sans-serif" }}>✓ {m}</span>
+            <span key={m} className="px-2 py-1 rounded text-xs text-white/30" style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.06)", fontFamily: "var(--font-body)" }}>✓ {m}</span>
           ))}
         </div>
       </div>
@@ -113,8 +113,8 @@ export default function Freelance() {
             <span className="section-label">04 / Freelance</span>
             <div className="w-8 h-px bg-pink-500/40" />
           </div>
-          <h2 className="section-title" style={{ fontFamily: "'Syne', sans-serif" }}>Production <span className="gradient-text">Websites</span></h2>
-          <p className="text-sm sm:text-base text-white/40 mt-3 max-w-xl" style={{ fontFamily: "'DM Sans', sans-serif" }}>Client projects built with performance, SEO, and conversion in mind.</p>
+          <h2 className="section-title" style={{ fontFamily: "var(--font-display)" }}>Production <span className="gradient-text">Websites</span></h2>
+          <p className="text-sm sm:text-base text-white/40 mt-3 max-w-xl" style={{ fontFamily: "var(--font-body)" }}>Client projects built with performance, SEO, and conversion in mind.</p>
         </motion.div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 sm:gap-10">
           {sites.map((site, i) => <BrowserMockup key={site.name} site={site} index={i} />)}
