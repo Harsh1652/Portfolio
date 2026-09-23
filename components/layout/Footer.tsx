@@ -7,6 +7,7 @@ const footerLinks = [
   { label: "Work", href: "/#projects" },
   { label: "Experience", href: "/#experience" },
   { label: "YouTube", href: "/youtube" },
+  { label: "RSS", href: "/feed.xml" },
   { label: "Contact", href: "/#contact" },
   { label: "GitHub", href: "https://github.com/Harsh1652" },
   { label: "LinkedIn", href: "https://www.linkedin.com/in/harsh-gupta16/" },

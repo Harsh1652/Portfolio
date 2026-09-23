@@ -1,5 +1,5 @@
 import { SITE_URL, site, absoluteUrl } from "@/lib/site";
-import { videos, CHANNEL, watchUrl, formatTime } from "@/lib/videos";
+import { videosNewestFirst, CHANNEL, watchUrl, formatTime, videoPath } from "@/lib/videos";
 
 export const dynamic = "force-static";
 
@@ -21,14 +21,17 @@ export function GET() {
     "## Pages",
     "",
     `- [Portfolio](${absoluteUrl("/")}): About, AI case studies, client websites, experience, skills, impact metrics and contact form.`,
-    `- [YouTube](${absoluteUrl("/youtube")}): Video breakdowns of AI architecture and infrastructure with chapters, takeaways and full transcripts.`,
+    `- [YouTube](${absoluteUrl("/youtube")}): Index of video breakdowns of AI architecture and infrastructure. Each video has its own page with chapters, takeaways, FAQ and a full transcript.`,
+    ...videosNewestFirst.map((v) => `- [${v.title}](${absoluteUrl(videoPath(v))}): ${v.description}`),
+    "",
+    `- [RSS feed](${absoluteUrl("/feed.xml")}): New video breakdowns as they are published.`,
     "",
     "## Videos",
     "",
-    ...videos.flatMap((v) => [
+    ...videosNewestFirst.flatMap((v) => [
       `### ${v.title}`,
       "",
-      `- Page: ${absoluteUrl(`/youtube#${v.slug}`)}`,
+      `- Page: ${absoluteUrl(videoPath(v))}`,
       `- Watch: ${watchUrl(v)}`,
       `- Published: ${v.uploadDate.slice(0, 10)} · Length: ${v.durationLabel}`,
       `- Topics: ${v.topics.join(", ")}`,

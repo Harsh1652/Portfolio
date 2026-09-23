@@ -103,6 +103,8 @@ export default function Hero({ active = true }: { active?: boolean }) {
             >
               <motion.span className="block" initial={{ y: 100, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ duration: 0.9, delay: 0.3, ease: [0.23, 1, 0.32, 1] }}>Harsh</motion.span>
               <motion.span className="block gradient-text" initial={{ y: 100, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ duration: 0.9, delay: 0.48, ease: [0.23, 1, 0.32, 1] }}>Gupta</motion.span>
+              {/* The visible h1 is the name alone; this keeps the role in the heading for search engines */}
+              <span className="sr-only"> — AI &amp; Backend Engineer building production AI systems</span>
             </motion.h1>
           </div>
 

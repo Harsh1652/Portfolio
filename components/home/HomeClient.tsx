@@ -36,7 +36,7 @@ export default function HomeClient() {
       <LoadingScreen onComplete={() => setLoaded(true)} />
       <SmoothScroll paused={!loaded}>
         <Navbar key={loaded ? "nav-in" : "nav-pre"} />
-        <main>
+        <main id="main">
           <Hero key={loaded ? "hero-in" : "hero-pre"} active={loaded} />
           <About />
           <Work />

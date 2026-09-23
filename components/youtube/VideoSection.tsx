@@ -1,7 +1,7 @@
 "use client";
 import { useRef, useState } from "react";
 import { ArrowUpRight, ChevronDown, Clock, CalendarDays, Play } from "lucide-react";
-import { type Video, embedUrl, watchUrl, formatTime, CHANNEL } from "@/lib/videos";
+import { type Video, embedUrl, watchUrl, formatTime, episodeNumber, CHANNEL } from "@/lib/videos";
 import { YouTubeIcon } from "@/components/ui/BrandIcons";
 
 const mono = { fontFamily: "var(--font-mono)" };
@@ -16,7 +16,8 @@ function SubHeading({ children }: { children: React.ReactNode }) {
   );
 }
 
-export default function VideoSection({ video, index }: { video: Video; index: number }) {
+/** `standalone` renders the section as the body of a video's own page (no divider, no top padding) */
+export default function VideoSection({ video, standalone = false }: { video: Video; standalone?: boolean }) {
   // `seek` is null until a timestamp is clicked, so the initial embed never autoplays
   const [seek, setSeek] = useState<{ start: number; n: number } | null>(null);
   const [expanded, setExpanded] = useState(false);
@@ -34,11 +35,17 @@ export default function VideoSection({ video, index }: { video: Video; index: nu
   const published = new Date(video.uploadDate).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric", timeZone: "UTC" });
 
   return (
-    <section id={video.slug} aria-labelledby={`${video.slug}-title`} className="scroll-mt-28 py-14 sm:py-20 border-t" style={{ borderColor: "rgba(255,255,255,0.08)" }}>
-      {/* Header */}
+    <section
+      id={video.slug}
+      aria-labelledby={standalone ? undefined : `${video.slug}-title`}
+      className={standalone ? "pb-14 sm:pb-20" : "scroll-mt-28 py-14 sm:py-20 border-t"}
+      style={standalone ? undefined : { borderColor: "rgba(255,255,255,0.08)" }}
+    >
+      {/* Header — skipped when standalone, because the page hero already carries this */}
+      {!standalone && (
       <header className="mb-8 sm:mb-10">
         <div className="flex flex-wrap items-center gap-x-5 gap-y-2 mb-4 text-xs text-white/50" style={mono}>
-          <span className="text-indigo-300">EP {String(index + 1).padStart(2, "0")}</span>
+          <span className="text-indigo-300">EP {String(episodeNumber(video)).padStart(2, "0")}</span>
           <span className="inline-flex items-center gap-1.5"><CalendarDays size={13} /><time dateTime={video.uploadDate}>{published}</time></span>
           <span className="inline-flex items-center gap-1.5"><Clock size={13} />{video.durationLabel}</span>
         </div>
@@ -50,6 +57,7 @@ export default function VideoSection({ video, index }: { video: Video; index: nu
           {video.topics.map((t) => <li key={t} className="chip">{t}</li>)}
         </ul>
       </header>
+      )}
 
       {/* Player + chapters */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-5 items-start">

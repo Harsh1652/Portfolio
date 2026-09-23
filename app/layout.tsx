@@ -19,7 +19,10 @@ export const metadata: Metadata = {
   authors: [{ name: site.name, url: SITE_URL }],
   creator: site.name,
   publisher: site.name,
-  alternates: { canonical: "/" },
+  alternates: {
+    canonical: "/",
+    types: { "application/rss+xml": [{ url: "/feed.xml", title: `${site.name} — AI architecture breakdowns` }] },
+  },
   openGraph: {
     type: "website",
     url: SITE_URL,
@@ -75,6 +78,7 @@ export default function RootLayout({
     <html lang="en" className={`${syne.variable} ${dmSans.variable} ${jetbrainsMono.variable}`} suppressHydrationWarning>
       <body className="antialiased" suppressHydrationWarning>
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+        <a href="#main" className="skip-link">Skip to content</a>
         {children}
       </body>
     </html>

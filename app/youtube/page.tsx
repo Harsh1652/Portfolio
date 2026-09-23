@@ -2,35 +2,39 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import PageShell from "@/components/youtube/PageShell";
-import VideoSection from "@/components/youtube/VideoSection";
+import VideoCard from "@/components/youtube/VideoCard";
 import { YouTubeIcon } from "@/components/ui/BrandIcons";
 import { SITE_URL, site, absoluteUrl } from "@/lib/site";
-import { videos, CHANNEL, embedUrl, watchUrl, thumbnailUrl, transcriptText } from "@/lib/videos";
+import { videos, videosNewestFirst, CHANNEL, embedUrl, watchUrl, thumbnailUrl, videoPath } from "@/lib/videos";
 
 const PAGE_PATH = "/youtube";
+const featured = videosNewestFirst[0];
 const pageTitle = "YouTube — AI Architecture & Infrastructure Explained";
 const pageDescription =
-  "Video breakdowns by Harsh Gupta on how modern AI systems work — model architecture, scaling and inference — with chapters, key takeaways and full transcripts. Latest: looped transformers and OpenAI's Astra.";
+  "Video breakdowns by Harsh Gupta on how modern AI systems work — model architecture, scaling and inference — with chapters, key takeaways and full transcripts. Latest: AI agent harnesses, and looped transformers in OpenAI's Astra.";
 
 export const metadata: Metadata = {
   title: pageTitle,
   description: pageDescription,
-  alternates: { canonical: PAGE_PATH },
-  keywords: ["Invisigent YouTube", "Harsh Gupta YouTube", "AI architecture explained", "looped transformer", "OpenAI Astra", "AI scaling", "LLM inference", "video transcript"],
+  alternates: {
+    canonical: PAGE_PATH,
+    types: { "application/rss+xml": [{ url: "/feed.xml", title: `${site.name} — AI architecture breakdowns` }] },
+  },
+  keywords: ["Invisigent YouTube", "Harsh Gupta YouTube", "AI architecture explained", "AI agent harness", "AI agents", "looped transformer", "OpenAI Astra", "AI scaling", "LLM inference", "video transcript"],
   openGraph: {
     type: "website",
     url: absoluteUrl(PAGE_PATH),
     siteName: site.name,
     title: `${pageTitle} | ${site.name}`,
     description: pageDescription,
-    images: videos[0] ? [{ url: thumbnailUrl(videos[0]), width: 1280, height: 720, alt: videos[0].title }] : undefined,
+    images: featured ? [{ url: thumbnailUrl(featured), width: 1280, height: 720, alt: featured.title }] : undefined,
     videos: videos.map((v) => ({ url: embedUrl(v), width: 1280, height: 720, type: "text/html" })),
   },
   twitter: {
     card: "summary_large_image",
     title: `${pageTitle} | ${site.name}`,
     description: pageDescription,
-    images: videos[0] ? [thumbnailUrl(videos[0])] : undefined,
+    images: featured ? [thumbnailUrl(featured)] : undefined,
   },
 };
 
@@ -45,9 +49,16 @@ const jsonLd = {
       description: pageDescription,
       isPartOf: { "@id": absoluteUrl("/#website") },
       author: { "@id": absoluteUrl("/#person") },
+      inLanguage: "en",
+      dateModified: videosNewestFirst[0]?.uploadDate,
       mainEntity: {
         "@type": "ItemList",
-        itemListElement: videos.map((v, i) => ({ "@type": "ListItem", position: i + 1, item: { "@id": absoluteUrl(`${PAGE_PATH}#${v.slug}`) } })),
+        itemListElement: videosNewestFirst.map((v, i) => ({
+          "@type": "ListItem",
+          position: i + 1,
+          url: absoluteUrl(videoPath(v)),
+          name: v.title,
+        })),
       },
     },
     {
@@ -57,37 +68,24 @@ const jsonLd = {
         { "@type": "ListItem", position: 2, name: "YouTube", item: absoluteUrl(PAGE_PATH) },
       ],
     },
-    ...videos.map((v) => ({
+    // Summary entries only — each video's full VideoObject (chapters, transcript, FAQ) lives on its own page
+    ...videosNewestFirst.map((v) => ({
       "@type": "VideoObject",
-      "@id": absoluteUrl(`${PAGE_PATH}#${v.slug}`),
+      "@id": absoluteUrl(`${videoPath(v)}#video`),
       name: v.title,
       description: v.description,
-      abstract: v.summary,
       thumbnailUrl: [thumbnailUrl(v)],
       uploadDate: v.uploadDate,
       duration: v.duration,
       embedUrl: embedUrl(v),
-      url: absoluteUrl(`${PAGE_PATH}#${v.slug}`),
+      url: absoluteUrl(videoPath(v)),
       sameAs: watchUrl(v),
-      keywords: v.topics.join(", "),
-      transcript: transcriptText(v),
+      about: v.topics.map((t) => ({ "@type": "Thing", name: t })),
+      inLanguage: "en",
+      isFamilyFriendly: true,
       author: { "@id": absoluteUrl("/#person") },
       publisher: { "@id": absoluteUrl("/#person") },
-      isPartOf: { "@id": absoluteUrl(`${PAGE_PATH}#page`) },
-      // Key moments
-      hasPart: v.chapters.map((c, i) => ({
-        "@type": "Clip",
-        name: c.title,
-        startOffset: c.start,
-        ...(v.chapters[i + 1] ? { endOffset: v.chapters[i + 1].start } : {}),
-        url: watchUrl(v, c.start),
-      })),
     })),
-    {
-      "@type": "FAQPage",
-      "@id": absoluteUrl(`${PAGE_PATH}#faq`),
-      mainEntity: videos.flatMap((v) => v.faqs.map((f) => ({ "@type": "Question", name: f.q, acceptedAnswer: { "@type": "Answer", text: f.a } }))),
-    },
   ],
 };
 
@@ -95,7 +93,11 @@ export default function YouTubePage() {
   return (
     <PageShell>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-      <main className="relative" style={{ background: "var(--bg)" }}>
+      {/* The player and thumbnails come from YouTube — warm those connections early */}
+      <link rel="preconnect" href="https://i.ytimg.com" />
+      <link rel="preconnect" href="https://www.youtube-nocookie.com" />
+      <link rel="dns-prefetch" href="https://www.youtube.com" />
+      <main id="main" className="relative" style={{ background: "var(--bg)" }}>
         {/* Page hero */}
         <div className="relative aurora-bg grid-bg overflow-hidden">
           <div className="relative z-10 max-w-6xl mx-auto px-5 sm:px-10 lg:px-16 pt-32 sm:pt-40 pb-14 sm:pb-20">
@@ -122,30 +124,27 @@ export default function YouTubePage() {
                 Visit the channel <ArrowUpRight size={15} />
               </a>
             </div>
-
-            {videos.length > 1 && (
-              <ol className="mt-12 grid grid-cols-1 sm:grid-cols-2 gap-2" aria-label="Videos on this page">
-                {videos.map((v, i) => (
-                  <li key={v.id}>
-                    <a href={`#${v.slug}`} className="card flex items-center gap-4 px-4 py-3 text-sm text-white/70 hover:text-white transition-colors">
-                      <span className="text-xs text-indigo-300" style={{ fontFamily: "var(--font-mono)" }}>{String(i + 1).padStart(2, "0")}</span>
-                      {v.title}
-                    </a>
-                  </li>
-                ))}
-              </ol>
-            )}
           </div>
         </div>
 
-        {/* One section per video */}
-        <div className="max-w-6xl mx-auto px-5 sm:px-10 lg:px-16">
-          {videos.map((v, i) => <VideoSection key={v.id} video={v} index={i} />)}
-        </div>
+        {/* One card per video — each opens its own page */}
+        <section aria-labelledby="all-videos" className="max-w-6xl mx-auto px-5 sm:px-10 lg:px-16 py-14 sm:py-20">
+          <div className="flex items-baseline justify-between gap-4 mb-8">
+            <h2 id="all-videos" className="font-extrabold text-2xl sm:text-3xl" style={{ fontFamily: "var(--font-display)", letterSpacing: "-0.02em" }}>
+              All videos
+            </h2>
+            <span className="text-xs text-white/40" style={{ fontFamily: "var(--font-mono)" }}>
+              {videos.length} {videos.length === 1 ? "breakdown" : "breakdowns"}
+            </span>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
+            {videosNewestFirst.map((v, i) => <VideoCard key={v.id} video={v} position={i} />)}
+          </div>
+        </section>
 
         {/* Closing CTA */}
         <div className="max-w-6xl mx-auto px-5 sm:px-10 lg:px-16 pb-20 sm:pb-28">
-          <div className="card p-7 sm:p-10 flex flex-col md:flex-row md:items-center justify-between gap-6 overflow-hidden">
+          <div className="card relative p-7 sm:p-10 flex flex-col md:flex-row md:items-center justify-between gap-6 overflow-hidden">
             <div className="absolute inset-0 pointer-events-none" style={{ background: "radial-gradient(600px circle at 0% 0%, rgba(99,102,241,0.12), transparent 60%)" }} />
             <div className="relative">
               <h2 className="font-extrabold text-xl sm:text-2xl mb-2" style={{ fontFamily: "var(--font-display)" }}>Building something with AI?</h2>
