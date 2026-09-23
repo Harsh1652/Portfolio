@@ -1,11 +1,33 @@
 import type { Metadata, Viewport } from "next";
-import { Syne, DM_Sans, JetBrains_Mono } from "next/font/google";
+import localFont from "next/font/local";
 import { SITE_URL, site, absoluteUrl } from "@/lib/site";
 import "./globals.css";
 
-const syne = Syne({ subsets: ["latin"], weight: ["400", "500", "600", "700", "800"], variable: "--font-syne", display: "swap" });
-const dmSans = DM_Sans({ subsets: ["latin"], weight: ["300", "400", "500", "600"], style: ["normal", "italic"], variable: "--font-dm-sans", display: "swap" });
-const jetbrainsMono = JetBrains_Mono({ subsets: ["latin"], weight: ["400", "500"], variable: "--font-jetbrains", display: "swap" });
+// Self-hosted variable fonts. Downloading these at build time from Google
+// (next/font/google) makes builds depend on whichever URL format the Google CDN
+// happens to serve, which Turbopack cannot always resolve.
+const syne = localFont({
+  src: "./fonts/Syne-Variable.woff2",
+  weight: "400 800",
+  style: "normal",
+  variable: "--font-syne",
+  display: "swap",
+});
+const dmSans = localFont({
+  src: [
+    { path: "./fonts/DMSans-Variable.woff2", weight: "300 600", style: "normal" },
+    { path: "./fonts/DMSans-Italic-Variable.woff2", weight: "300 600", style: "italic" },
+  ],
+  variable: "--font-dm-sans",
+  display: "swap",
+});
+const jetbrainsMono = localFont({
+  src: "./fonts/JetBrainsMono-Variable.woff2",
+  weight: "400 500",
+  style: "normal",
+  variable: "--font-jetbrains",
+  display: "swap",
+});
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
